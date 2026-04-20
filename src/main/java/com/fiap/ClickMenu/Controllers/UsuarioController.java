@@ -34,9 +34,27 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDTO> salvarUsuario (@RequestBody UsuarioRequestDTO dto) {
-        UsuarioResponseDTO usuarioSalvo = usuarioService.salvarUsuario(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
+    public ResponseEntity<UsuarioResponseDTO> criarUsuario (@RequestBody UsuarioRequestDTO dto) {
+        UsuarioResponseDTO usuarioCriado = usuarioService.criarUsuario(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCriado);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario (
+            @PathVariable("id") Long id,
+            @RequestBody UsuarioResponseDTO dto
+    ){
+        UsuarioResponseDTO usuarioAtualizado = usuarioService.atualizarUsuario(id, dto);
+        return ResponseEntity.ok(usuarioAtualizado);
+    }
+
+    @PutMapping("/{id}/senha")
+    public ResponseEntity<UsuarioResponseDTO> atualizarSenha (
+            @PathVariable("id") Long id,
+            @RequestBody UsuarioRequestDTO dto
+    ){
+        UsuarioResponseDTO senhaAtualizada = usuarioService.atualizarSenha(id, dto);
+        return ResponseEntity.ok(senhaAtualizada);
     }
 
     @DeleteMapping("/{id}")

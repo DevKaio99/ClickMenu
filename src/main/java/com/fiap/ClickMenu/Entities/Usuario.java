@@ -2,7 +2,7 @@ package com.fiap.ClickMenu.Entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuarios")
@@ -14,7 +14,7 @@ public class Usuario {
     protected String email;
     protected String login;
     protected String senha;
-    protected LocalDate dataUltimaAlteracao;
+    protected LocalDateTime dataUltimaAlteracao;
     protected String endereco;
     @Enumerated(EnumType.STRING)
     protected TipoUsuario tipo;
@@ -27,11 +27,11 @@ public class Usuario {
         this.id = id;
     }
 
-    public LocalDate getDataUltimaAlteracao() {
+    public LocalDateTime getDataUltimaAlteracao() {
         return dataUltimaAlteracao;
     }
 
-    public void setDataUltimaAlteracao(LocalDate dataUltimaAlteracao) {
+    public void setDataUltimaAlteracao(LocalDateTime dataUltimaAlteracao) {
         this.dataUltimaAlteracao = dataUltimaAlteracao;
     }
 

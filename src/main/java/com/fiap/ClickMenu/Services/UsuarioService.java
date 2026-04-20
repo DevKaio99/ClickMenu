@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -35,12 +37,40 @@ public class UsuarioService {
 
     }
 
-    public UsuarioResponseDTO salvarUsuario(UsuarioRequestDTO dto) {
+    public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO dto) {
         Usuario usuario = usuarioMapper.toEntity(dto);
-        Usuario usuarioSalvo = usuarioRepository.save(usuario);
-        return usuarioMapper.usuarioResponseDTO(usuarioSalvo);
+        usuario.setDataUltimaAlteracao(LocalDateTime.now());
+        Usuario usuarioCriado = usuarioRepository.save(usuario);
+        return usuarioMapper.usuarioResponseDTO(usuarioCriado);
 
     }
+
+    public UsuarioResponseDTO atualizarUsuario (Long id, UsuarioResponseDTO dto) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        usuario.setNome(dto.nome());
+        usuario.setEndereco(dto.endereco());
+        usuario.setDataUltimaAlteracao(LocalDateTime.now());
+
+        Usuario atualizado = usuarioRepository.save(usuario);
+
+        return usuarioMapper.usuarioResponseDTO(atualizado);
+
+    }
+
+    public UsuarioResponseDTO atualizarSenha (Long id, UsuarioRequestDTO dto) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        usuario.setSenha(dto.senha());
+        usuario.setDataUltimaAlteracao(LocalDateTime.now());
+        Usuario senhaAtualizada = usuarioRepository.save(usuario);
+
+        return usuarioMapper.usuarioResponseDTO(senhaAtualizada);
+
+    }
+
 
     public void deletarUsuario(Long id) {
             usuarioRepository.deleteById(id);
