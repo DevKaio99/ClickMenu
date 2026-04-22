@@ -1,13 +1,14 @@
 package com.fiap.ClickMenu.Controllers;
 
-import com.fiap.ClickMenu.Dtos.UsuarioRequestDTO;
+import com.fiap.ClickMenu.Dtos.UsuarioCreateDTO;
 import com.fiap.ClickMenu.Dtos.UsuarioResponseDTO;
-import com.fiap.ClickMenu.Entities.Usuario;
+import com.fiap.ClickMenu.Dtos.UsuarioUpdateDTO;
+import com.fiap.ClickMenu.Dtos.UsuarioUpdatePassDTO;
 import com.fiap.ClickMenu.Services.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDTO> criarUsuario (@RequestBody UsuarioRequestDTO dto) {
+    public ResponseEntity<UsuarioResponseDTO> criarUsuario (@Valid @RequestBody UsuarioCreateDTO dto) {
         UsuarioResponseDTO usuarioCriado = usuarioService.criarUsuario(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCriado);
     }
@@ -42,7 +43,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> atualizarUsuario (
             @PathVariable("id") Long id,
-            @RequestBody UsuarioResponseDTO dto
+            @Valid @RequestBody UsuarioUpdateDTO dto
     ){
         UsuarioResponseDTO usuarioAtualizado = usuarioService.atualizarUsuario(id, dto);
         return ResponseEntity.ok(usuarioAtualizado);
@@ -51,7 +52,7 @@ public class UsuarioController {
     @PutMapping("/{id}/senha")
     public ResponseEntity<UsuarioResponseDTO> atualizarSenha (
             @PathVariable("id") Long id,
-            @RequestBody UsuarioRequestDTO dto
+            @Valid @RequestBody UsuarioUpdatePassDTO dto
     ){
         UsuarioResponseDTO senhaAtualizada = usuarioService.atualizarSenha(id, dto);
         return ResponseEntity.ok(senhaAtualizada);

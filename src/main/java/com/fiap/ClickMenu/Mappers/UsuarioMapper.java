@@ -1,6 +1,6 @@
 package com.fiap.ClickMenu.Mappers;
 
-import com.fiap.ClickMenu.Dtos.UsuarioRequestDTO;
+import com.fiap.ClickMenu.Dtos.UsuarioCreateDTO;
 import com.fiap.ClickMenu.Dtos.UsuarioResponseDTO;
 import com.fiap.ClickMenu.Entities.Usuario;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class UsuarioMapper {
         );
     }
 
-    public Usuario toEntity(UsuarioRequestDTO dto) {
+    public Usuario toEntity(UsuarioCreateDTO dto) {
         Usuario usuario = new Usuario();
 
         usuario.setNome(dto.nome());

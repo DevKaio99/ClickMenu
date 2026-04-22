@@ -1,15 +1,18 @@
 package com.fiap.ClickMenu.Services;
 
-import com.fiap.ClickMenu.Dtos.UsuarioRequestDTO;
+import com.fiap.ClickMenu.Dtos.UsuarioCreateDTO;
 import com.fiap.ClickMenu.Dtos.UsuarioResponseDTO;
+import com.fiap.ClickMenu.Dtos.UsuarioUpdateDTO;
+import com.fiap.ClickMenu.Dtos.UsuarioUpdatePassDTO;
 import com.fiap.ClickMenu.Entities.Usuario;
 import com.fiap.ClickMenu.Mappers.UsuarioMapper;
 import com.fiap.ClickMenu.Repositories.UsuarioRepository;
+import com.fiap.ClickMenu.Exceptions.BusinessException;
+import com.fiap.ClickMenu.Exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,6 +33,7 @@ public class UsuarioService {
     }
 
     public List<UsuarioResponseDTO> buscarUsuarioPorNome(String nome) {
+
         return usuarioRepository.findByNomeContainingIgnoreCase(nome)
                 .stream()
                 .map(usuarioMapper::usuarioResponseDTO)
@@ -37,17 +41,23 @@ public class UsuarioService {
 
     }
 
-    public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO dto) {
+    public UsuarioResponseDTO criarUsuario(UsuarioCreateDTO dto) {
+
+        if(usuarioRepository.existsByEmail(dto.email())) {
+            throw new BusinessException("Email já cadastrado.");
+        }
+
         Usuario usuario = usuarioMapper.toEntity(dto);
         usuario.setDataUltimaAlteracao(LocalDateTime.now());
         Usuario usuarioCriado = usuarioRepository.save(usuario);
+
         return usuarioMapper.usuarioResponseDTO(usuarioCriado);
 
     }
 
-    public UsuarioResponseDTO atualizarUsuario (Long id, UsuarioResponseDTO dto) {
+    public UsuarioResponseDTO atualizarUsuario (Long id, UsuarioUpdateDTO dto) {
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         usuario.setNome(dto.nome());
         usuario.setEndereco(dto.endereco());
@@ -59,11 +69,14 @@ public class UsuarioService {
 
     }
 
-    public UsuarioResponseDTO atualizarSenha (Long id, UsuarioRequestDTO dto) {
+    public UsuarioResponseDTO atualizarSenha (Long id, UsuarioUpdatePassDTO dto) {
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-        usuario.setSenha(dto.senha());
+        if (!usuario.getSenha().equals(dto.senhaAtual())) {
+            throw new BusinessException("Senha atual incorreta");
+        }
+        usuario.setSenha(dto.senhaNova());
         usuario.setDataUltimaAlteracao(LocalDateTime.now());
         Usuario senhaAtualizada = usuarioRepository.save(usuario);
 
@@ -73,7 +86,11 @@ public class UsuarioService {
 
 
     public void deletarUsuario(Long id) {
-            usuarioRepository.deleteById(id);
+        Usuario usuario = usuarioRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
+        usuarioRepository.delete(usuario);
+
     }
 
 }
