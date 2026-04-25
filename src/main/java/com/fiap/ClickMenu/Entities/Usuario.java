@@ -13,7 +13,6 @@ public class Usuario {
     protected String nome;
     @Column(unique = true)
     protected String email;
-    protected String login;
     protected String senha;
     protected LocalDateTime dataUltimaAlteracao;
     protected String endereco;
@@ -58,14 +57,6 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getEndereco() {

@@ -14,7 +14,6 @@ public class UsuarioMapper {
                 usuario.getId(),
                 usuario.getNome(),
                 usuario.getEmail(),
-                usuario.getLogin(),
                 usuario.getEndereco(),
                 usuario.getDataUltimaAlteracao(),
                 usuario.getTipo()
@@ -26,7 +25,6 @@ public class UsuarioMapper {
 
         usuario.setNome(dto.nome());
         usuario.setEmail(dto.email());
-        usuario.setLogin(dto.login());
         usuario.setSenha(dto.senha());
         usuario.setEndereco(dto.endereco());
         usuario.setDataUltimaAlteracao(LocalDateTime.now());

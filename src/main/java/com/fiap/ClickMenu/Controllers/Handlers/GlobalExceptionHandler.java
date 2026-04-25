@@ -1,10 +1,6 @@
 package com.fiap.ClickMenu.Controllers.Handlers;
 
-import com.fiap.ClickMenu.Exceptions.ErrorResponse;
-import com.fiap.ClickMenu.Exceptions.ResourceNotFound;
-import com.fiap.ClickMenu.Exceptions.ValidationError;
-import com.fiap.ClickMenu.Exceptions.BusinessException;
-import com.fiap.ClickMenu.Exceptions.ResourceNotFoundException;
+import com.fiap.ClickMenu.Exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +11,27 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+//    @ExceptionHandler(ResourceNotFoundException.class)
+//    public ResponseEntity<ResourceNotFound> handlerResourceNotFoudException(ResourceNotFoundException e) {
+//        var status = HttpStatus.NOT_FOUND;
+//        return ResponseEntity.status(status.value()).body (new ResourceNotFound(status.value(), "Resource Not Found" ,e.getMessage()));
+//    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ResourceNotFound> handlerResourceNotFoudException(ResourceNotFoundException e) {
-        var status = HttpStatus.NOT_FOUND;
-        return ResponseEntity.status(status.value()).body (new ResourceNotFound(e.getMessage(),status.value()));
+    public ResponseEntity<ResourceNotFound> handlerResourceNotFoudException(
+            ResourceNotFoundException ex,
+            HttpServletRequest request) {
+
+        ResourceNotFound error = new ResourceNotFound(HttpStatus.NOT_FOUND.value(), "Resource Not Found", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorResponse> handleBusinessException(
+    public ResponseEntity<BusinessError> handleBusinessException(
             BusinessException ex,
             HttpServletRequest request) {
 
-        ErrorResponse error = new ErrorResponse(
+        BusinessError error = new BusinessError(
                 HttpStatus.BAD_REQUEST.value(),
                 "Business Error",
                 ex.getMessage()
@@ -56,7 +61,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(error);
     }
 
-    // 🔹 Erro genérico (fallback)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(
             Exception ex,

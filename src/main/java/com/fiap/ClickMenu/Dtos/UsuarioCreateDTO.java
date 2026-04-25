@@ -11,12 +11,11 @@ public record UsuarioCreateDTO(
         @NotBlank(message = "Campo não pode estar em branco.")
         String nome,
         @NotBlank(message = "Campo não pode estar em branco.")
-        @Email
+        @Email(message = "O Email inserido é inválido")
         String email,
         @NotBlank(message = "Campo não pode estar em branco.")
-        String login,
-        @NotBlank(message = "Campo não pode estar em branco.")
         String senha,
+        @NotBlank(message = "Campo não pode estar em branco.")
         String endereco,
         LocalDateTime dataUltimaAlteracao,
         @NotNull(message = "Tipo não pode ser nulo.")
