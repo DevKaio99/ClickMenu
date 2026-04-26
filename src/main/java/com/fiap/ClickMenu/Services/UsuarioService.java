@@ -78,7 +78,7 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-        if (!usuario.getSenha().equals(passwordEncoder.encode(dto.senhaAtual()))) {
+        if (!passwordEncoder.matches(dto.senhaAtual(), usuario.getSenha())) {
             throw new BusinessException("Senha atual incorreta");
         }
         usuario.setSenha(passwordEncoder.encode(dto.senhaNova()));
