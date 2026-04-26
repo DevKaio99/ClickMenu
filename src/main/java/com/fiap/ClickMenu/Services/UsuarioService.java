@@ -11,6 +11,8 @@ import com.fiap.ClickMenu.Exceptions.BusinessException;
 import com.fiap.ClickMenu.Exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,10 +23,12 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+    public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioMapper = usuarioMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Page<UsuarioResponseDTO> listarUsuarios(Pageable pageable) {
@@ -48,6 +52,7 @@ public class UsuarioService {
         }
 
         Usuario usuario = usuarioMapper.toEntity(dto);
+        usuario.setSenha(passwordEncoder.encode(dto.senha()));
         usuario.setDataUltimaAlteracao(LocalDateTime.now());
         Usuario usuarioCriado = usuarioRepository.save(usuario);
 
@@ -73,10 +78,10 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-        if (!usuario.getSenha().equals(dto.senhaAtual())) {
+        if (!usuario.getSenha().equals(passwordEncoder.encode(dto.senhaAtual()))) {
             throw new BusinessException("Senha atual incorreta");
         }
-        usuario.setSenha(dto.senhaNova());
+        usuario.setSenha(passwordEncoder.encode(dto.senhaNova()));
         usuario.setDataUltimaAlteracao(LocalDateTime.now());
         Usuario senhaAtualizada = usuarioRepository.save(usuario);
 
