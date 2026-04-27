@@ -5,13 +5,12 @@ import com.fiap.ClickMenu.Dtos.UsuarioResponseDTO;
 import com.fiap.ClickMenu.Dtos.UsuarioUpdateDTO;
 import com.fiap.ClickMenu.Dtos.UsuarioUpdatePassDTO;
 import com.fiap.ClickMenu.Entities.Usuario;
-import com.fiap.ClickMenu.Mappers.UsuarioMapper;
-import com.fiap.ClickMenu.Repositories.UsuarioRepository;
 import com.fiap.ClickMenu.Exceptions.BusinessException;
 import com.fiap.ClickMenu.Exceptions.ResourceNotFoundException;
+import com.fiap.ClickMenu.Mappers.UsuarioMapper;
+import com.fiap.ClickMenu.Repositories.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

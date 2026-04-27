@@ -1,77 +1,105 @@
 package com.fiap.ClickMenu.Controllers.Handlers;
 
-import com.fiap.ClickMenu.Exceptions.*;
+import com.fiap.ClickMenu.Exceptions.BusinessException;
+import com.fiap.ClickMenu.Exceptions.ResourceNotFoundException;
+import com.fiap.ClickMenu.Exceptions.TokenGenerationException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-//    @ExceptionHandler(ResourceNotFoundException.class)
-//    public ResponseEntity<ResourceNotFound> handlerResourceNotFoudException(ResourceNotFoundException e) {
-//        var status = HttpStatus.NOT_FOUND;
-//        return ResponseEntity.status(status.value()).body (new ResourceNotFound(status.value(), "Resource Not Found" ,e.getMessage()));
-//    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ResourceNotFound> handlerResourceNotFoudException(
+    public ProblemDetail handlerResourceNotFoud(
             ResourceNotFoundException ex,
             HttpServletRequest request) {
 
-        ResourceNotFound error = new ResourceNotFound(HttpStatus.NOT_FOUND.value(), "Resource Not Found", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+
+        problem.setTitle("Recurso não encontrado");
+        problem.setDetail(ex.getMessage());
+        problem.setProperty("timestamp", LocalDateTime.now());
+        problem.setProperty("path", request.getRequestURI());
+
+        return problem;
+
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<BusinessError> handleBusinessException(
+    public ProblemDetail handleBusiness(
             BusinessException ex,
             HttpServletRequest request) {
 
-        BusinessError error = new BusinessError(
-                HttpStatus.BAD_REQUEST.value(),
-                "Business Error",
-                ex.getMessage()
-        );
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        problem.setTitle("Erro de regra de negócio");
+        problem.setDetail(ex.getMessage());
+        problem.setProperty("timestamp", LocalDateTime.now());
+        problem.setProperty("path", request.getRequestURI());
+
+        return problem;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationError> handleValidationException(
+    public ProblemDetail handleValidation(
             MethodArgumentNotValidException ex,
             HttpServletRequest request) {
 
-        String message = ex.getBindingResult()
-                .getFieldErrors()
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+
+        problem.setTitle("Erro de validação");
+
+        var errors = ex.getFieldErrors()
                 .stream()
                 .map(err -> err.getField() + ": " + err.getDefaultMessage())
-                .findFirst()
-                .orElse("Erro de validação");
+                .collect(Collectors.toList());
 
-        ValidationError error = new ValidationError(
-                HttpStatus.BAD_REQUEST.value(),
-                "Validation Error",
-                message
-        );
+        problem.setDetail("Um ou mais campos estão inválidos");
+        problem.setProperty("errors", errors);
+        problem.setProperty("timestamp", LocalDateTime.now());
+        problem.setProperty("path", request.getRequestURI());
 
-        return ResponseEntity.badRequest().body(error);
+        return problem;
+
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(
+    public ProblemDetail handleGenericException(
             Exception ex,
             HttpServletRequest request) {
 
-        ErrorResponse error = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Internal Error",
-                "Ocorreu um erro inesperado"
-        );
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        problem.setTitle("Erro interno do servidor");
+        problem.setDetail("Ocorreu um erro inesperado. Tente novamente mais tarde.");
+
+        problem.setProperty("timestamp", LocalDateTime.now());
+        problem.setProperty("path", request.getRequestURI());
+
+        return problem;
+    }
+
+    @ExceptionHandler(TokenGenerationException.class)
+    public ProblemDetail handleTokenGeneration (
+            TokenGenerationException ex,
+            HttpServletRequest request) {
+
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        problem.setTitle("Erro interno ao gerar token");
+        problem.setDetail("Ocorreu um erro inesperado. Tente novamente mais tarde.");
+
+        problem.setProperty("timestamp", LocalDateTime.now());
+        problem.setProperty("path", request.getRequestURI());
+
+        return problem;
     }
 }

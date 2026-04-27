@@ -1,9 +1,0 @@
-package com.fiap.ClickMenu.Exceptions;
-
-public record ResourceNotFound (
-        int status,
-        String error,
-        String message
-){
-
-}

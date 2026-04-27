@@ -2,10 +2,8 @@ package com.fiap.ClickMenu.Controllers;
 
 import com.fiap.ClickMenu.Dtos.AutenticacaoDTO;
 import com.fiap.ClickMenu.Dtos.LoginResponseDTO;
-import com.fiap.ClickMenu.Entities.Usuario;
 import com.fiap.ClickMenu.Security.TokenService;
 import jakarta.validation.Valid;
-import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 
 public class AutenticacaoController {
 
