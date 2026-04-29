@@ -162,6 +162,64 @@ Campos obrigatórios:
 
 ---
 
+## 🚀 Como rodar o projeto ClickMenu
+
+Siga o passo a passo abaixo para executar a aplicação localmente utilizando Docker.
+
+📦 Pré-requisitos
+
+Antes de começar, você precisa ter instalado:
+
+- Docker
+- Docker Compose
+- Git
+
+ 
+
+
+### 📥 Clonando o repositório
+
+Clone o projeto usando o comando:
+
+git clone https://github.com/DevKaio99/ClickMenu.git
+
+Acesse a pasta do projeto:
+
+cd ClickMenu
+
+### ⚙️ Configuração das variáveis de ambiente
+
+O projeto utiliza variáveis de ambiente para configurar o banco de dados e segurança.
+
+1. Crie um arquivo .env na raiz do projeto
+2. Copie o conteúdo do arquivo .env.example alterando as credenciais desejadas ou utilize o modelo abaixo:
+- DB_NAME=clickmenu
+- DB_USER=seu_usuario
+- DB_PASSWORD=sua_senha
+- JWT_SECRET=sua_chave_secreta_aqui
+
+
+ 
+### 🐳 Subindo a aplicação com Docker
+
+Execute o comando abaixo na raiz do projeto:
+
+docker compose up --build
+
+Esse comando irá:
+
+- Construir a imagem da aplicação
+- Baixar a imagem do PostgreSQL
+- Criar e iniciar os containers
+
+### 🌐 Acessando a aplicação
+
+Após subir os containers, a API estará disponível em:
+
+http://localhost:8080
+
+---
+
 ## 👨‍💻 Autor
 
 Desenvolvido por **Kaio Andrade**
