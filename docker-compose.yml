@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   app:
-    build: src/main/java/com/fiap/ClickMenu
+    build: .
     container_name: clickmenu-app
     ports:
       - "8080:8080"
