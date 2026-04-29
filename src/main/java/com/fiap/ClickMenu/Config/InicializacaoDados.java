@@ -16,7 +16,7 @@ public class InicializacaoDados {
     @Bean
     CommandLineRunner init(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if (usuarioRepository.findByEmailIgnoreCase("adm@email.com").isEmpty()) {
+            if (usuarioRepository.findByEmailIgnoreCase("admin@email.com").isEmpty()) {
 
                 Usuario usuarioInicial = new Usuario();
                 usuarioInicial.setNome("Admin");
