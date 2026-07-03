@@ -7,7 +7,7 @@ import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.UsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.UsuarioUpdateDTO;
-import click_menu.fiap.com.br.infrastructure.mapper.UsuarioMapper;
+import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

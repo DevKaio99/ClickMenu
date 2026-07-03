@@ -5,7 +5,7 @@ import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.UsuarioUpdateDTO;
-import click_menu.fiap.com.br.infrastructure.mapper.UsuarioMapper;
+import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

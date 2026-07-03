@@ -6,7 +6,7 @@ import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.UsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.UsuarioUpdateDTO;
-import click_menu.fiap.com.br.infrastructure.mapper.UsuarioMapper;
+import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

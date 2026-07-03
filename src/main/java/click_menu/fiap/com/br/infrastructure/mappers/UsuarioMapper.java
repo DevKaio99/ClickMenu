@@ -1,4 +1,4 @@
-package click_menu.fiap.com.br.infrastructure.mapper;
+package click_menu.fiap.com.br.infrastructure.mappers;
 
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.infrastructure.dtos.UsuarioCreateDTO;

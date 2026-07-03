@@ -6,7 +6,7 @@ import click_menu.fiap.com.br.application.usecases.usuarios.DeletarUsuarioUseCas
 import click_menu.fiap.com.br.infrastructure.dtos.UsuarioCreateDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.UsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.UsuarioUpdateDTO;
-import click_menu.fiap.com.br.infrastructure.mapper.UsuarioMapper;
+import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

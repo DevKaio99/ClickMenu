@@ -1,7 +1,6 @@
-package click_menu.fiap.com.br.domain;
+package click_menu.fiap.com.br.domain.entities;
 
 
-import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,5 +41,12 @@ public class UsuarioTest {
     void naoDevePermitirTipoNulo() {
         assertThrows(IllegalArgumentException.class,
                 () -> new Usuario ("Teste","emailinvalido.com","123456", LocalDateTime.now(), null));
+    }
+
+    @Test
+    @DisplayName("Não deve permitir criar usuário com senha menor que 6 caracteres")
+    void naoDevePermitirSenhaCurta() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Usuario ("Teste","emailinvalido.com","123", LocalDateTime.now(), TipoUsuario.CLIENTE));
     }
 }
