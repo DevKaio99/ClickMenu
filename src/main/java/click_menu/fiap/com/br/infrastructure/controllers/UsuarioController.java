@@ -19,13 +19,11 @@ import java.util.UUID;
 public class UsuarioController {
 
     private final CriarUsuarioUseCase criarUsuarioUseCase;
-    private final UsuarioMapper usuarioMapper;
     private final DeletarUsuarioUseCase deletarUsuarioUseCase;
     private final AtualizarUsuarioUseCase atualizarUsuarioUseCase;
 
-    public UsuarioController(CriarUsuarioUseCase criarUsuarioUseCase, UsuarioMapper usuarioMapper, DeletarUsuarioUseCase deletarUsuarioUseCase, AtualizarUsuarioUseCase atualizarUsuarioUseCase) {
+    public UsuarioController(CriarUsuarioUseCase criarUsuarioUseCase, DeletarUsuarioUseCase deletarUsuarioUseCase, AtualizarUsuarioUseCase atualizarUsuarioUseCase) {
         this.criarUsuarioUseCase = criarUsuarioUseCase;
-        this.usuarioMapper = usuarioMapper;
         this.deletarUsuarioUseCase = deletarUsuarioUseCase;
         this.atualizarUsuarioUseCase = atualizarUsuarioUseCase;
     }

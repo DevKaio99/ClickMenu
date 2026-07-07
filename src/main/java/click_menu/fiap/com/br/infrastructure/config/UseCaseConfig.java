@@ -1,6 +1,8 @@
 package click_menu.fiap.com.br.infrastructure.config;
 
+import click_menu.fiap.com.br.application.usecases.restaurantes.AtualizarRestauranteUsecase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.CriarRestauranteUseCase;
+import click_menu.fiap.com.br.application.usecases.restaurantes.DeletarRestauranteUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.AtualizarUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.CriarUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.DeletarUsuarioUseCase;
@@ -32,5 +34,15 @@ public class UseCaseConfig {
     @Bean
     public CriarRestauranteUseCase criarRestauranteUseCase (RestauranteRepository restauranteRepository, RestauranteMapper restauranteMapper, UsuarioRepository usuarioRepository) {
         return new CriarRestauranteUseCase(restauranteRepository, restauranteMapper, usuarioRepository);
+    }
+
+    @Bean
+    public AtualizarRestauranteUsecase atualizarRestauranteUsecase (RestauranteRepository restauranteRepository, RestauranteMapper restauranteMapper, UsuarioRepository usuarioRepository) {
+        return new AtualizarRestauranteUsecase(restauranteRepository, restauranteMapper, usuarioRepository);
+    }
+
+    @Bean
+    public DeletarRestauranteUseCase deletarRestauranteUseCase (RestauranteRepository restauranteRepository) {
+        return new DeletarRestauranteUseCase(restauranteRepository);
     }
 }

@@ -1,24 +1,23 @@
 package click_menu.fiap.com.br.infrastructure.persistence;
 
 import click_menu.fiap.com.br.domain.entities.Usuario;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
+import click_menu.fiap.com.br.infrastructure.mappers.UsuarioJdbcMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public class UsuarioRepositoryJdbc implements UsuarioRepository {
     private final JdbcTemplate jdbc;
+    private final UsuarioJdbcMapper usuarioJdbcMapper;
 
 
-    public UsuarioRepositoryJdbc(JdbcTemplate jdbc) {
+    public UsuarioRepositoryJdbc(JdbcTemplate jdbc, UsuarioJdbcMapper usuarioJdbcMapper) {
         this.jdbc = jdbc;
+        this.usuarioJdbcMapper = usuarioJdbcMapper;
     }
 
     @Override
@@ -56,8 +55,22 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
 
     @Override
     public Optional<Usuario> buscarUsuarioPorId(UUID id) {
-    String sql = "SELECT * FROM usuario WHERE id = ?";
-    return jdbc.query(sql, this::mapearUsuario, id).stream().findFirst();
+
+        String sql = """
+            SELECT
+                id AS usuario_id,
+                nome,
+                email,
+                senha,
+                data_ultima_alteracao,
+                tipo
+            FROM usuario
+            WHERE id = ?
+            """;
+
+        return jdbc.query(sql, usuarioJdbcMapper, id)
+                .stream()
+                .findFirst();
     }
 
     @Override
@@ -67,15 +80,4 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
         return usuario;
     }
 
-    private Usuario mapearUsuario(ResultSet rs, int rowNum) throws SQLException {
-        Usuario usuario = new Usuario(
-                rs.getString("nome"),
-                rs.getString("email"),
-                rs.getString("senha"),
-                rs.getObject("data_ultima_alteracao", LocalDateTime.class),
-                TipoUsuario.valueOf(rs.getString("tipo"))
-        );
-        usuario.setId(rs.getObject("id", UUID.class));
-        return usuario;
-    }
 }

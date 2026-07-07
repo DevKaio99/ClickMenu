@@ -57,7 +57,7 @@ public class CriarRestauranteUseCaseTestIT {
         assertNotNull(resultado.id());
         assertEquals("RestauranteTeste", resultado.nomeRestaurante());
 
-        assertTrue(restauranteRepository.validarNomeEEmailExistente("RestauranteTeste", "Rua de exemplo, 123"));
+        assertTrue(restauranteRepository.validarNomeEEnderecoExistente("RestauranteTeste", "Rua de exemplo, 123"));
     }
 
     @Test

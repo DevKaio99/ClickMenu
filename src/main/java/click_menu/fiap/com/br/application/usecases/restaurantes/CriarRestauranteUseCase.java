@@ -23,7 +23,7 @@ public class CriarRestauranteUseCase {
     }
 
     public RestauranteResponseDTO executar(RestauranteCreateDTO restauranteCreateDTO) {
-        if(restauranteRepository.validarNomeEEmailExistente(restauranteCreateDTO.nomeRestaurante(), restauranteCreateDTO.enderecoRestaurante())){
+        if(restauranteRepository.validarNomeEEnderecoExistente(restauranteCreateDTO.nomeRestaurante(), restauranteCreateDTO.enderecoRestaurante())){
             throw new BusinessException("Restaurante já cadastrado nesse endereço");
         }
 

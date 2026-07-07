@@ -25,8 +25,6 @@ public class AtualizarUsuarioUseCase {
         Usuario usuario = usuarioRepository.buscarUsuarioPorId(id).
                 orElseThrow(() -> new ResourceNotFoundException("Id não encontrado"));
 
-
-
         if (!usuario.getEmail().equals(usuarioUpdateDTO.email())
                 && usuarioRepository.validarEmailExistente(usuarioUpdateDTO.email())) {
             throw new BusinessException("Email já cadastrado.");
