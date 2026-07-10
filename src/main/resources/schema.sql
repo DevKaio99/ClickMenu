@@ -19,3 +19,15 @@ CREATE TABLE IF NOT EXISTS restaurante (
 
     CONSTRAINT fk_restaurante_usuario FOREIGN KEY (dono_restaurante) REFERENCES usuario(id)
 );
+
+CREATE TABLE IF NOT EXISTS item_cardapio (
+    id                      UUID            PRIMARY KEY,
+    nome                    VARCHAR(255)    NOT NULL,
+    descricao               VARCHAR(255)    NOT NULL,
+    preco                   DECIMAL(10,2)   NOT NULL,
+    consumir_apenas_restaurante    BOOLEAN       NOT NULL,
+    foto                    VARCHAR(255)    NOT NULL,
+    restaurante_id             UUID            NOT NULL,
+
+    CONSTRAINT fk_item_cardapio_restaurante FOREIGN KEY (restaurante_id) REFERENCES restaurante(id)
+);

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RestauranteTest {
 
     @Test
-    @DisplayName("Deve criar um restaurante valido com id geradon automaticamente")
+    @DisplayName("Deve criar um restaurante valido com id gerado automaticamente")
     void deveCriarRestauranteValido() {
         Usuario usuarioTeste = new Usuario(
                 "Teste","teste@email.com",

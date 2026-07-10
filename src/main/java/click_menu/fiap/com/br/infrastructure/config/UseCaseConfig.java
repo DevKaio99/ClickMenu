@@ -1,13 +1,16 @@
 package click_menu.fiap.com.br.infrastructure.config;
 
+import click_menu.fiap.com.br.application.usecases.ItensCardapios.CriarItemCardapioUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.AtualizarRestauranteUsecase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.CriarRestauranteUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.DeletarRestauranteUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.AtualizarUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.CriarUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.DeletarUsuarioUseCase;
+import click_menu.fiap.com.br.domain.repositories.ItemCardapioRepository;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
+import click_menu.fiap.com.br.infrastructure.mappers.ItemCardapioMapper;
 import click_menu.fiap.com.br.infrastructure.mappers.RestauranteMapper;
 import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
 import org.springframework.context.annotation.Bean;
@@ -44,5 +47,10 @@ public class UseCaseConfig {
     @Bean
     public DeletarRestauranteUseCase deletarRestauranteUseCase (RestauranteRepository restauranteRepository) {
         return new DeletarRestauranteUseCase(restauranteRepository);
+    }
+
+    @Bean
+    public CriarItemCardapioUseCase criarItemCardapioUseCase (ItemCardapioRepository itemCardapioRepository, ItemCardapioMapper itemCardapioMapper, RestauranteRepository restauranteRepository) {
+        return new CriarItemCardapioUseCase(itemCardapioRepository, itemCardapioMapper, restauranteRepository);
     }
 }
