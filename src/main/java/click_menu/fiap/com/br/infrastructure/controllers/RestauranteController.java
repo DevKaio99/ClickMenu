@@ -3,7 +3,6 @@ package click_menu.fiap.com.br.infrastructure.controllers;
 import click_menu.fiap.com.br.application.usecases.restaurantes.AtualizarRestauranteUsecase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.CriarRestauranteUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.DeletarRestauranteUseCase;
-import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.infrastructure.dtos.RestauranteCreateDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.RestauranteResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.RestauranteUpdateDTO;

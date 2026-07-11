@@ -1,8 +1,9 @@
 package click_menu.fiap.com.br.infrastructure.dtos;
 
-import click_menu.fiap.com.br.domain.entities.Restaurante;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public record ItemCardapioUpdateDTO (
         String nome,
@@ -10,7 +11,8 @@ public record ItemCardapioUpdateDTO (
         BigDecimal preco,
         boolean consumirApenasRestaurante,
         String foto,
-        Restaurante restaurante
+        @NotNull(message = "Informe o ID de um restaurante")
+        UUID restaurante
 ) {
 
 }

@@ -60,6 +60,7 @@ public class AtualizarUsuarioUseCaseTest {
                 TipoUsuario.CLIENTE);
 
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.atualizarUsuario(usuario)).thenReturn(usuario);
         when(usuarioMapper.usuarioResponseDTO(usuario)).thenReturn(usuarioResponseDTO);
 
         atualizarUsuarioUseCase.executar(id, usuarioUpdateDTO);
@@ -92,6 +93,7 @@ public class AtualizarUsuarioUseCaseTest {
 
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));
         when(usuarioRepository.validarEmailExistente("novoteste@email.com")).thenReturn(false);
+        when(usuarioRepository.atualizarUsuario(usuario)).thenReturn(usuario);
         when(usuarioMapper.usuarioResponseDTO(usuario)).thenReturn(usuarioResponseDTO);
 
         atualizarUsuarioUseCase.executar(id, usuarioUpdateDTO);

@@ -2,6 +2,7 @@ package click_menu.fiap.com.br.infrastructure.persistence;
 
 import click_menu.fiap.com.br.domain.entities.ItemCardapio;
 import click_menu.fiap.com.br.domain.repositories.ItemCardapioRepository;
+import click_menu.fiap.com.br.infrastructure.mappers.ItemCardapioJdbcMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -11,9 +12,11 @@ import java.util.UUID;
 @Repository
 public class ItemCardapioJdbc implements ItemCardapioRepository {
     private final JdbcTemplate jdbc;
+    private final ItemCardapioJdbcMapper itemCardapioJdbcMapper;
 
-    public ItemCardapioJdbc(JdbcTemplate jdbc) {
+    public ItemCardapioJdbc(JdbcTemplate jdbc, ItemCardapioJdbcMapper itemCardapioJdbcMapper) {
         this.jdbc = jdbc;
+        this.itemCardapioJdbcMapper = itemCardapioJdbcMapper;
     }
 
     @Override
@@ -36,16 +39,77 @@ return itemCardapio;
 
     @Override
     public Optional<ItemCardapio> buscarItemCardapioPorId(UUID id) {
-        return Optional.empty();
+        String sql = """
+            SELECT
+                i.id AS item_id,
+                i.nome,
+                i.descricao,
+                i.preco,
+                i.consumir_apenas_restaurante,
+                i.foto,
+
+                r.id AS restaurante_id,
+                r.nome_restaurante,
+                r.endereco_restaurante,
+                r.tipo_cozinha,
+                r.horario_abertura,
+                r.horario_fechamento,
+                r.dias_funcionamento,
+
+                u.id AS usuario_id,
+                u.nome,
+                u.email,
+                u.senha,
+                u.data_ultima_alteracao,
+                u.tipo
+
+            FROM item_cardapio i
+
+            INNER JOIN restaurante r
+                ON r.id = i.restaurante_id
+
+            INNER JOIN usuario u
+                ON u.id = r.dono_restaurante
+
+            WHERE i.id = ?
+            """;
+
+        return jdbc.query(sql, itemCardapioJdbcMapper, id)
+                .stream()
+                .findFirst();
     }
 
     @Override
     public ItemCardapio atualizarItemCardapio(ItemCardapio itemCardapio) {
-        return null;
-    }
+            String sql = """
+                    UPDATE item_cardapio
+                    SET nome = ?,
+                        descricao = ?,
+                        preco = ?,
+                        consumir_apenas_restaurante = ?,
+                        foto = ?,
+                        restaurante_id = ?
+                    WHERE id = ?
+            """;
+
+            jdbc.update(
+                    sql,
+                    itemCardapio.getNome(),
+                    itemCardapio.getDescricao(),
+                    itemCardapio.getPreco(),
+                    itemCardapio.isConsumirApenasRestaurante(),
+                    itemCardapio.getFoto(),
+                    itemCardapio.getRestaurante().getId(),
+                    itemCardapio.getId()
+            );
+
+            return itemCardapio;
+        }
 
     @Override
     public void deletarItemCardapio(UUID id) {
+        String sql = "DELETE FROM item_cardapio WHERE id = ?";
 
+        jdbc.update(sql, id);
     }
 }

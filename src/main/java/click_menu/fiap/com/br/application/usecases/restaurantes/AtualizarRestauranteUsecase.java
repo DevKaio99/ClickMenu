@@ -56,7 +56,7 @@ public class AtualizarRestauranteUsecase {
 
         Restaurante restauranteAtualizado = restauranteRepository.atualizarRestaurante(restaurante);
 
-        return restauranteMapper.restauranteResponseDTO(restaurante);
+        return restauranteMapper.restauranteResponseDTO(restauranteAtualizado);
 
     }
 }

@@ -35,9 +35,9 @@ public class AtualizarUsuarioUseCase {
         usuario.setTipo(usuarioUpdateDTO.tipo());
         usuario.setDataUltimaAlteracao(LocalDateTime.now());
 
-        usuarioRepository.atualizarUsuario(usuario);
+        Usuario usuarioAtualizado = usuarioRepository.atualizarUsuario(usuario);
 
-        return usuarioMapper.usuarioResponseDTO(usuario);
+        return usuarioMapper.usuarioResponseDTO(usuarioAtualizado);
 
     }
 }

@@ -1,6 +1,8 @@
 package click_menu.fiap.com.br.infrastructure.config;
 
+import click_menu.fiap.com.br.application.usecases.ItensCardapios.AtualizarItemCardapioUseCase;
 import click_menu.fiap.com.br.application.usecases.ItensCardapios.CriarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.ItensCardapios.DeletarItemCardapioUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.AtualizarRestauranteUsecase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.CriarRestauranteUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.DeletarRestauranteUseCase;
@@ -52,5 +54,15 @@ public class UseCaseConfig {
     @Bean
     public CriarItemCardapioUseCase criarItemCardapioUseCase (ItemCardapioRepository itemCardapioRepository, ItemCardapioMapper itemCardapioMapper, RestauranteRepository restauranteRepository) {
         return new CriarItemCardapioUseCase(itemCardapioRepository, itemCardapioMapper, restauranteRepository);
+    }
+
+    @Bean
+    public AtualizarItemCardapioUseCase atualizarItemCardapioUseCase(ItemCardapioRepository itemCardapioRepository, RestauranteRepository restauranteRepository, ItemCardapioMapper itemCardapioMapper) {
+        return new AtualizarItemCardapioUseCase(itemCardapioRepository, restauranteRepository, itemCardapioMapper);
+    }
+
+    @Bean
+    public DeletarItemCardapioUseCase deletarItemCardapioUseCase (ItemCardapioRepository itemCardapioRepository) {
+        return new DeletarItemCardapioUseCase(itemCardapioRepository);
     }
 }

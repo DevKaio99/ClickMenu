@@ -85,6 +85,7 @@ public class AtualizarRestauranteUseCaseTest {
 
         when(restauranteRepository.buscarRestaurantePorId(id)).thenReturn(Optional.of(restaurante));
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuarioDonoRestaurante));
+        when(restauranteRepository.atualizarRestaurante(restaurante)).thenReturn(restaurante);
         when(restauranteMapper.restauranteResponseDTO(restaurante)).thenReturn(restauranteResponseDTO);
 
         atualizarRestauranteUsecase.executar(id, restauranteUpdateDTO);
