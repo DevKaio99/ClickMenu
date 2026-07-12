@@ -27,8 +27,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public DeletarUsuarioUseCase deletarUsuarioUseCase (UsuarioRepository usuarioRepository) {
-        return new DeletarUsuarioUseCase(usuarioRepository);
+    public DeletarUsuarioUseCase deletarUsuarioUseCase (UsuarioRepository usuarioRepository, RestauranteRepository restauranteRepository) {
+        return new DeletarUsuarioUseCase(usuarioRepository, restauranteRepository);
     }
 
     @Bean

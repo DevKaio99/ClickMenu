@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS restaurante (
     dias_funcionamento      VARCHAR(50)     NOT NULL,
     dono_restaurante        UUID            NOT NULL,
 
-    CONSTRAINT fk_restaurante_usuario FOREIGN KEY (dono_restaurante) REFERENCES usuario(id)
+    CONSTRAINT fk_restaurante_usuario FOREIGN KEY (dono_restaurante) REFERENCES usuario(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS item_cardapio (

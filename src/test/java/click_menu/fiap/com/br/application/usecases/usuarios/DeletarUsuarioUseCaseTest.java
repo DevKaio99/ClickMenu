@@ -1,8 +1,10 @@
 package click_menu.fiap.com.br.application.usecases.usuarios;
 
+import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.enums.TipoUsuario;
+import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,12 +24,14 @@ public class DeletarUsuarioUseCaseTest {
 
     @Mock
     private UsuarioRepository usuarioRepository;
+    @Mock
+    private RestauranteRepository restauranteRepository;
 
     private DeletarUsuarioUseCase deletarUsuarioUseCase;
 
     @BeforeEach
     void setUp() {
-        deletarUsuarioUseCase = new DeletarUsuarioUseCase(usuarioRepository);
+        deletarUsuarioUseCase = new DeletarUsuarioUseCase(usuarioRepository, restauranteRepository);
     }
 
     @Test
@@ -41,6 +45,7 @@ public class DeletarUsuarioUseCaseTest {
                 TipoUsuario.CLIENTE);
 
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));
+        when(restauranteRepository.existePorUsuarioId(id)).thenReturn(false);
 
         deletarUsuarioUseCase.executar(id);
 
@@ -54,6 +59,23 @@ public class DeletarUsuarioUseCaseTest {
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> deletarUsuarioUseCase.executar(id));
+
+        verify(usuarioRepository, never()).deletarUsuario(any());
+    }
+
+    @Test
+    void deveLancarExceptionQuandoUsuarioPossuiRestaurantesCadastrados() {
+        UUID id = UUID.randomUUID();
+        Usuario usuario = new Usuario(
+                "Teste",
+                "teste@email.com",
+                "123456",
+                LocalDateTime.now(),
+                TipoUsuario.CLIENTE);
+        when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));
+        when(restauranteRepository.existePorUsuarioId(id)).thenReturn(true);
+
+        assertThrows(BusinessException.class, () -> deletarUsuarioUseCase.executar(id));
 
         verify(usuarioRepository, never()).deletarUsuario(any());
     }

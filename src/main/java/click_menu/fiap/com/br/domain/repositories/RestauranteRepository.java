@@ -11,4 +11,5 @@ public interface RestauranteRepository {
     Optional<Restaurante> buscarRestaurantePorId (UUID id);
     Restaurante atualizarRestaurante (Restaurante restaurante);
     void deletarRestaurante (UUID id);
+    boolean existePorUsuarioId(UUID usuarioId);
 }

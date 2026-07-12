@@ -115,6 +115,21 @@ public class RestauranteRepositoryJdbc implements RestauranteRepository {
         jdbc.update(sql, id);
     }
 
+    @Override
+    public boolean existePorUsuarioId(UUID usuarioId) {
+        String sql = """
+        SELECT EXISTS (
+            SELECT 1
+            FROM restaurante
+            WHERE dono_restaurante = ?
+        )
+        """;
+
+        return Boolean.TRUE.equals(
+                jdbc.queryForObject(sql, Boolean.class, usuarioId)
+        );
+    }
+
 
     private String converterDiasFuncionamento(Set<DiasDaSemana> dias) {
         return dias.stream()
