@@ -6,6 +6,7 @@ import click_menu.fiap.com.br.infrastructure.mappers.ItemCardapioJdbcMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,6 +36,49 @@ public class ItemCardapioJdbc implements ItemCardapioRepository {
         );
 
 return itemCardapio;
+    }
+
+    @Override
+    public List<ItemCardapio> listarItensCardapio() {
+        String sql = """
+            SELECT
+                i.id AS item_id,
+                i.nome,
+                i.descricao,
+                i.preco,
+                i.consumir_apenas_restaurante,
+                i.foto,
+
+                r.id AS restaurante_id,
+                r.nome_restaurante,
+                r.endereco_restaurante,
+                r.tipo_cozinha,
+                r.horario_abertura,
+                r.horario_fechamento,
+                r.dias_funcionamento,
+
+                u.id AS usuario_id,
+                u.nome,
+                u.email,
+                u.senha,
+                u.data_ultima_alteracao,
+
+                t.id AS tipo_usuario_id,
+                t.nome_tipo
+
+            FROM item_cardapio i
+
+            INNER JOIN restaurante r
+                ON r.id = i.restaurante_id
+
+            INNER JOIN usuario u
+                ON u.id = r.dono_restaurante
+
+            INNER JOIN tipo_usuario t
+                ON t.id = u.tipo_id
+            """;
+
+        return jdbc.query(sql, itemCardapioJdbcMapper);
     }
 
     @Override

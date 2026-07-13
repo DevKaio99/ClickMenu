@@ -1,11 +1,15 @@
 package click_menu.fiap.com.br.infrastructure.config;
 
 import click_menu.fiap.com.br.application.usecases.itensCardapios.AtualizarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.itensCardapios.BuscarItemCardapioPorIdUseCase;
 import click_menu.fiap.com.br.application.usecases.itensCardapios.CriarItemCardapioUseCase;
 import click_menu.fiap.com.br.application.usecases.itensCardapios.DeletarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.itensCardapios.ListarItensCardapioUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.AtualizarRestauranteUsecase;
+import click_menu.fiap.com.br.application.usecases.restaurantes.BuscarRestaurantePorIdUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.CriarRestauranteUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.DeletarRestauranteUseCase;
+import click_menu.fiap.com.br.application.usecases.restaurantes.ListarRestaurantesUseCase;
 import click_menu.fiap.com.br.application.usecases.tiposUsuario.AtualizarTipoUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.tiposUsuario.BuscarTipoUsuarioPorIdUseCase;
 import click_menu.fiap.com.br.application.usecases.tiposUsuario.CriarTipoUsuarioUseCase;
@@ -13,8 +17,10 @@ import click_menu.fiap.com.br.application.usecases.tiposUsuario.DeletarTipoUsuar
 import click_menu.fiap.com.br.application.usecases.tiposUsuario.ListarTiposUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.AtualizarSenhaUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.AtualizarUsuarioUseCase;
+import click_menu.fiap.com.br.application.usecases.usuarios.BuscarUsuarioPorIdUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.CriarUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.DeletarUsuarioUseCase;
+import click_menu.fiap.com.br.application.usecases.usuarios.ListarUsuariosUseCase;
 import click_menu.fiap.com.br.domain.repositories.ItemCardapioRepository;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
 import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
@@ -41,6 +47,16 @@ public class UseCaseConfig {
     }
 
     @Bean
+    public ListarUsuariosUseCase listarUsuariosUseCase (UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+        return new ListarUsuariosUseCase(usuarioRepository, usuarioMapper);
+    }
+
+    @Bean
+    public BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase (UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+        return new BuscarUsuarioPorIdUseCase(usuarioRepository, usuarioMapper);
+    }
+
+    @Bean
     public AtualizarUsuarioUseCase atualizarUsuarioUseCase (UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, TipoUsuarioRepository tipoUsuarioRepository) {
         return new AtualizarUsuarioUseCase(usuarioRepository, usuarioMapper, tipoUsuarioRepository);
     }
@@ -56,6 +72,16 @@ public class UseCaseConfig {
     }
 
     @Bean
+    public ListarRestaurantesUseCase listarRestaurantesUseCase (RestauranteRepository restauranteRepository, RestauranteMapper restauranteMapper) {
+        return new ListarRestaurantesUseCase(restauranteRepository, restauranteMapper);
+    }
+
+    @Bean
+    public BuscarRestaurantePorIdUseCase buscarRestaurantePorIdUseCase (RestauranteRepository restauranteRepository, RestauranteMapper restauranteMapper) {
+        return new BuscarRestaurantePorIdUseCase(restauranteRepository, restauranteMapper);
+    }
+
+    @Bean
     public AtualizarRestauranteUsecase atualizarRestauranteUsecase (RestauranteRepository restauranteRepository, RestauranteMapper restauranteMapper, UsuarioRepository usuarioRepository) {
         return new AtualizarRestauranteUsecase(restauranteRepository, restauranteMapper, usuarioRepository);
     }
@@ -68,6 +94,16 @@ public class UseCaseConfig {
     @Bean
     public CriarItemCardapioUseCase criarItemCardapioUseCase (ItemCardapioRepository itemCardapioRepository, ItemCardapioMapper itemCardapioMapper, RestauranteRepository restauranteRepository) {
         return new CriarItemCardapioUseCase(itemCardapioRepository, itemCardapioMapper, restauranteRepository);
+    }
+
+    @Bean
+    public ListarItensCardapioUseCase listarItensCardapioUseCase (ItemCardapioRepository itemCardapioRepository, ItemCardapioMapper itemCardapioMapper) {
+        return new ListarItensCardapioUseCase(itemCardapioRepository, itemCardapioMapper);
+    }
+
+    @Bean
+    public BuscarItemCardapioPorIdUseCase buscarItemCardapioPorIdUseCase (ItemCardapioRepository itemCardapioRepository, ItemCardapioMapper itemCardapioMapper) {
+        return new BuscarItemCardapioPorIdUseCase(itemCardapioRepository, itemCardapioMapper);
     }
 
     @Bean

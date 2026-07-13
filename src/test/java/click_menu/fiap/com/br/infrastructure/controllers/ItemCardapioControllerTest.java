@@ -1,8 +1,11 @@
 package click_menu.fiap.com.br.infrastructure.controllers;
 
+import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.application.usecases.itensCardapios.AtualizarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.itensCardapios.BuscarItemCardapioPorIdUseCase;
 import click_menu.fiap.com.br.application.usecases.itensCardapios.CriarItemCardapioUseCase;
 import click_menu.fiap.com.br.application.usecases.itensCardapios.DeletarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.itensCardapios.ListarItensCardapioUseCase;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioCreateDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioResponseDTO;
@@ -20,6 +23,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -37,6 +41,10 @@ public class ItemCardapioControllerTest {
 
     @MockitoBean
     private CriarItemCardapioUseCase criarItemCardapioUseCase;
+    @MockitoBean
+    private ListarItensCardapioUseCase listarItensCardapioUseCase;
+    @MockitoBean
+    private BuscarItemCardapioPorIdUseCase buscarItemCardapioPorIdUseCase;
     @MockitoBean
     private AtualizarItemCardapioUseCase atualizarItemCardapioUseCase;
     @MockitoBean
@@ -91,6 +99,52 @@ public class ItemCardapioControllerTest {
                 .andExpect(status().isBadRequest());
 
         verify(criarItemCardapioUseCase, never()).executar(any());
+    }
+
+    @Test
+    void deveListarItensCardapio() throws Exception {
+        ItemCardapioResponseDTO itemCardapioResponseDTO = new ItemCardapioResponseDTO(
+                UUID.randomUUID(),
+                "Frango a milanesa",
+                "frango empanado com farinha",
+                BigDecimal.valueOf(29.90),
+                true,
+                "/...");
+
+        when(listarItensCardapioUseCase.executar()).thenReturn(List.of(itemCardapioResponseDTO));
+
+        mockMvc.perform(get("/api/v1/item-cardapio"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    void deveBuscarItemCardapioPorIdQuandoExistente() throws Exception {
+        UUID id = UUID.randomUUID();
+        ItemCardapioResponseDTO itemCardapioResponseDTO = new ItemCardapioResponseDTO(
+                id,
+                "Frango a milanesa",
+                "frango empanado com farinha",
+                BigDecimal.valueOf(29.90),
+                true,
+                "/...");
+
+        when(buscarItemCardapioPorIdUseCase.executar(id)).thenReturn(itemCardapioResponseDTO);
+
+        mockMvc.perform(get("/api/v1/item-cardapio/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("Frango a milanesa"));
+    }
+
+    @Test
+    void deveRetornar404QuandoItemCardapioNaoEncontrado() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        when(buscarItemCardapioPorIdUseCase.executar(id))
+                .thenThrow(new ResourceNotFoundException("Item do cardápio não encontrado"));
+
+        mockMvc.perform(get("/api/v1/item-cardapio/{id}", id))
+                .andExpect(status().isNotFound());
     }
 
     @Test

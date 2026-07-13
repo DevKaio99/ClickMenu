@@ -7,6 +7,7 @@ import click_menu.fiap.com.br.infrastructure.mappers.RestauranteJdbcMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -47,6 +48,36 @@ public class RestauranteRepositoryJdbc implements RestauranteRepository {
         );
 
         return restaurante;
+    }
+
+    @Override
+    public List<Restaurante> listarRestaurantes() {
+        String sql = """
+            SELECT
+                r.id AS restaurante_id,
+                r.nome_restaurante,
+                r.endereco_restaurante,
+                r.tipo_cozinha,
+                r.horario_abertura,
+                r.horario_fechamento,
+                r.dias_funcionamento,
+
+                u.id AS usuario_id,
+                u.nome,
+                u.email,
+                u.senha,
+                u.data_ultima_alteracao,
+
+                t.id AS tipo_usuario_id,
+                t.nome_tipo
+
+        FROM restaurante r
+        INNER JOIN usuario u
+            ON u.id = r.dono_restaurante
+        INNER JOIN tipo_usuario t
+            ON t.id = u.tipo_id
+        """;
+        return jdbc.query(sql, restauranteJdbcMapper);
     }
 
     @Override

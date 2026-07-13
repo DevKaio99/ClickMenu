@@ -1,9 +1,12 @@
 package click_menu.fiap.com.br.infrastructure.controllers;
 
+import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.application.usecases.usuarios.AtualizarSenhaUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.AtualizarUsuarioUseCase;
+import click_menu.fiap.com.br.application.usecases.usuarios.BuscarUsuarioPorIdUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.CriarUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.DeletarUsuarioUseCase;
+import click_menu.fiap.com.br.application.usecases.usuarios.ListarUsuariosUseCase;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.TipoUsuario.TipoUsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.security.CustomUserDetailsService;
@@ -23,6 +26,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -40,6 +44,10 @@ public class UsuarioControllerTest {
 
     @MockitoBean
     private CriarUsuarioUseCase criarUsuarioUseCase;
+    @MockitoBean
+    private ListarUsuariosUseCase listarUsuariosUseCase;
+    @MockitoBean
+    private BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase;
     @MockitoBean
     private DeletarUsuarioUseCase deletarUsuarioUseCase;
     @MockitoBean
@@ -93,6 +101,50 @@ public class UsuarioControllerTest {
                 .andExpect(status().isBadRequest());
 
         verify(criarUsuarioUseCase, never()).executar(any());
+    }
+
+    @Test
+    void deveListarUsuarios() throws Exception {
+        UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(
+                UUID.randomUUID(),
+                "Teste",
+                "teste@email.com",
+                LocalDateTime.of(2026, 1, 1, 10, 0),
+                new TipoUsuarioResponseDTO(UUID.randomUUID(), "CLIENTE"));
+
+        when(listarUsuariosUseCase.executar()).thenReturn(List.of(usuarioResponseDTO));
+
+        mockMvc.perform(get("/api/v1/usuarios"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    void deveBuscarUsuarioPorIdQuandoExistente() throws Exception {
+        UUID id = UUID.randomUUID();
+        UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(
+                id,
+                "Teste",
+                "teste@email.com",
+                LocalDateTime.of(2026, 1, 1, 10, 0),
+                new TipoUsuarioResponseDTO(UUID.randomUUID(), "CLIENTE"));
+
+        when(buscarUsuarioPorIdUseCase.executar(id)).thenReturn(usuarioResponseDTO);
+
+        mockMvc.perform(get("/api/v1/usuarios/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("Teste"));
+    }
+
+    @Test
+    void deveRetornar404QuandoUsuarioNaoEncontrado() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        when(buscarUsuarioPorIdUseCase.executar(id))
+                .thenThrow(new ResourceNotFoundException("Usuário não encontrado"));
+
+        mockMvc.perform(get("/api/v1/usuarios/{id}", id))
+                .andExpect(status().isNotFound());
     }
 
     @Test

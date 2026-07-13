@@ -1,8 +1,11 @@
 package click_menu.fiap.com.br.infrastructure.controllers;
 
+import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.application.usecases.restaurantes.AtualizarRestauranteUsecase;
+import click_menu.fiap.com.br.application.usecases.restaurantes.BuscarRestaurantePorIdUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.CriarRestauranteUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.DeletarRestauranteUseCase;
+import click_menu.fiap.com.br.application.usecases.restaurantes.ListarRestaurantesUseCase;
 import click_menu.fiap.com.br.domain.enums.DiasDaSemana;
 import click_menu.fiap.com.br.domain.enums.TipoCozinhaRestaurante;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
@@ -23,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalTime;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -40,6 +44,10 @@ public class RestauranteControllerTest {
 
     @MockitoBean
     private CriarRestauranteUseCase criarRestauranteUseCase;
+    @MockitoBean
+    private ListarRestaurantesUseCase listarRestaurantesUseCase;
+    @MockitoBean
+    private BuscarRestaurantePorIdUseCase buscarRestaurantePorIdUseCase;
     @MockitoBean
     private AtualizarRestauranteUsecase atualizarRestauranteUsecase;
     @MockitoBean
@@ -97,6 +105,54 @@ public class RestauranteControllerTest {
                 .andExpect(status().isBadRequest());
 
         verify(criarRestauranteUseCase, never()).executar(any());
+    }
+
+    @Test
+    void deveListarRestaurantes() throws Exception {
+        RestauranteResponseDTO restauranteResponseDTO = new RestauranteResponseDTO(
+                UUID.randomUUID(),
+                "RestauranteTeste",
+                "Rua de exemplo, 344",
+                TipoCozinhaRestaurante.JAPONESA,
+                LocalTime.of(10, 0),
+                LocalTime.of(22, 0),
+                EnumSet.of(DiasDaSemana.SEGUNDA));
+
+        when(listarRestaurantesUseCase.executar()).thenReturn(List.of(restauranteResponseDTO));
+
+        mockMvc.perform(get("/api/v1/restaurantes"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    void deveBuscarRestaurantePorIdQuandoExistente() throws Exception {
+        UUID id = UUID.randomUUID();
+        RestauranteResponseDTO restauranteResponseDTO = new RestauranteResponseDTO(
+                id,
+                "RestauranteTeste",
+                "Rua de exemplo, 344",
+                TipoCozinhaRestaurante.JAPONESA,
+                LocalTime.of(10, 0),
+                LocalTime.of(22, 0),
+                EnumSet.of(DiasDaSemana.SEGUNDA));
+
+        when(buscarRestaurantePorIdUseCase.executar(id)).thenReturn(restauranteResponseDTO);
+
+        mockMvc.perform(get("/api/v1/restaurantes/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nomeRestaurante").value("RestauranteTeste"));
+    }
+
+    @Test
+    void deveRetornar404QuandoRestauranteNaoEncontrado() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        when(buscarRestaurantePorIdUseCase.executar(id))
+                .thenThrow(new ResourceNotFoundException("Restaurante não encontrado"));
+
+        mockMvc.perform(get("/api/v1/restaurantes/{id}", id))
+                .andExpect(status().isNotFound());
     }
 
     @Test

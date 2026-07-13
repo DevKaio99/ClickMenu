@@ -55,6 +55,25 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
     }
 
     @Override
+    public List<Usuario> listarUsuarios() {
+        String sql = """
+            SELECT
+                u.id AS usuario_id,
+                u.nome,
+                u.email,
+                u.senha,
+                u.data_ultima_alteracao,
+
+                t.id AS tipo_usuario_id,
+                t.nome_tipo
+            FROM usuario u
+            JOIN tipo_usuario t ON t.id = u.tipo_id
+            """;
+
+        return jdbc.query(sql, usuarioJdbcMapper);
+    }
+
+    @Override
     public Optional<Usuario> buscarUsuarioPorId(UUID id) {
 
         String sql = """
