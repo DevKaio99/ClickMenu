@@ -1,7 +1,5 @@
 package click_menu.fiap.com.br.domain.entities;
 
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 

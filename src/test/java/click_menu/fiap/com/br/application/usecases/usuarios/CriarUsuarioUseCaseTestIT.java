@@ -1,7 +1,8 @@
 package click_menu.fiap.com.br.application.usecases.usuarios;
 
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
+import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioCreateDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioResponseDTO;
@@ -22,15 +23,22 @@ public class CriarUsuarioUseCaseTestIT {
         private CriarUsuarioUseCase criarUsuarioUseCase;
         @Autowired
         private UsuarioRepository usuarioRepository;
+        @Autowired
+        private TipoUsuarioRepository tipoUsuarioRepository;
 
         @Test
         void deveCriarUsuarioNoBancoQuandoEmailInexistente()  {
+            TipoUsuario tipoCliente = tipoUsuarioRepository.listarTiposUsuario().stream()
+                .filter(tipo -> tipo.getNomeTipo().equals("CLIENTE"))
+                .findFirst()
+                .orElseGet(() -> tipoUsuarioRepository.salvarTipoUsuario(new TipoUsuario("CLIENTE")));
+
             UsuarioCreateDTO usuarioCreateDTO = new UsuarioCreateDTO(
                     "Teste",
                     "teste@email.com",
                     "123456",
                     LocalDateTime.now(),
-                    TipoUsuario.CLIENTE);
+                    tipoCliente.getId());
 
             UsuarioResponseDTO resultado = criarUsuarioUseCase.executar(usuarioCreateDTO);
 
@@ -43,12 +51,17 @@ public class CriarUsuarioUseCaseTestIT {
 
         @Test
         void naoDeveCriarUsuarioQuandoEmailExiste() {
+            TipoUsuario tipoCliente = tipoUsuarioRepository.listarTiposUsuario().stream()
+                .filter(tipo -> tipo.getNomeTipo().equals("CLIENTE"))
+                .findFirst()
+                .orElseGet(() -> tipoUsuarioRepository.salvarTipoUsuario(new TipoUsuario("CLIENTE")));
+
             UsuarioCreateDTO usuarioCreateDTO = new UsuarioCreateDTO(
                     "Teste",
                     "teste@email.com",
                     "123456",
                     LocalDateTime.now(),
-                    TipoUsuario.CLIENTE);
+                    tipoCliente.getId());
 
             criarUsuarioUseCase.executar(usuarioCreateDTO);
 

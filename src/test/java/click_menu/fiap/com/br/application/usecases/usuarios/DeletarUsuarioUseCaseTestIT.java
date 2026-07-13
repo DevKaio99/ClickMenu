@@ -1,8 +1,9 @@
 package click_menu.fiap.com.br.application.usecases.usuarios;
 
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
+import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -22,15 +23,22 @@ public class DeletarUsuarioUseCaseTestIT {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
+    private TipoUsuarioRepository tipoUsuarioRepository;
+    @Autowired
     private DeletarUsuarioUseCase deletarUsuarioUseCase;
 
     @Test
     void  deveDeletarUsuarioComIdExistente() {
+        TipoUsuario tipoCliente = tipoUsuarioRepository.listarTiposUsuario().stream()
+                .filter(tipo -> tipo.getNomeTipo().equals("CLIENTE"))
+                .findFirst()
+                .orElseGet(() -> tipoUsuarioRepository.salvarTipoUsuario(new TipoUsuario("CLIENTE")));
+
         Usuario usuario = usuarioRepository.salvarUsuario(new Usuario(                "Teste",
                 "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE));
+                tipoCliente));
         UUID id = usuario.getId();
 
         assertTrue(usuarioRepository.buscarUsuarioPorId(id).isPresent());

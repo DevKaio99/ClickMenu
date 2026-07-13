@@ -2,7 +2,9 @@ package click_menu.fiap.com.br.application.usecases.usuarios;
 
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
+import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioUpdateDTO;
@@ -14,11 +16,13 @@ import java.util.UUID;
 public class AtualizarUsuarioUseCase {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+    private final TipoUsuarioRepository tipoUsuarioRepository;
 
 
-    public AtualizarUsuarioUseCase(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+    public AtualizarUsuarioUseCase(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, TipoUsuarioRepository tipoUsuarioRepository) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioMapper = usuarioMapper;
+        this.tipoUsuarioRepository = tipoUsuarioRepository;
     }
 
     public UsuarioResponseDTO executar(UUID id, UsuarioUpdateDTO usuarioUpdateDTO) {
@@ -30,9 +34,12 @@ public class AtualizarUsuarioUseCase {
             throw new BusinessException("Email já cadastrado.");
         }
 
+        TipoUsuario tipo = tipoUsuarioRepository.buscarTipoUsuarioPorId(usuarioUpdateDTO.tipoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Tipo de usuário não encontrado"));
+
         usuario.setNome(usuarioUpdateDTO.nome());
         usuario.setEmail(usuarioUpdateDTO.email());
-        usuario.setTipo(usuarioUpdateDTO.tipo());
+        usuario.setTipo(tipo);
         usuario.setDataUltimaAlteracao(LocalDateTime.now());
 
         Usuario usuarioAtualizado = usuarioRepository.atualizarUsuario(usuario);

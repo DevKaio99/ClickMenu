@@ -25,7 +25,7 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
     public Usuario salvarUsuario(Usuario usuario) {
 
         String sql = """
-                INSERT INTO usuario (id, nome, email, senha, data_ultima_alteracao, tipo) VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO usuario (id, nome, email, senha, data_ultima_alteracao, tipo_id) VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
         jdbc.update(sql,
@@ -34,7 +34,7 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
                     usuario.getEmail(),
                     usuario.getSenha(),
                     usuario.getDataUltimaAlteracao(),
-                    usuario.getTipo().name()
+                    usuario.getTipo().getId()
         );
 
         return usuario;
@@ -59,14 +59,17 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
 
         String sql = """
             SELECT
-                id AS usuario_id,
-                nome,
-                email,
-                senha,
-                data_ultima_alteracao,
-                tipo
-            FROM usuario
-            WHERE id = ?
+                u.id AS usuario_id,
+                u.nome,
+                u.email,
+                u.senha,
+                u.data_ultima_alteracao,
+
+                t.id AS tipo_usuario_id,
+                t.nome_tipo
+            FROM usuario u
+            JOIN tipo_usuario t ON t.id = u.tipo_id
+            WHERE u.id = ?
             """;
 
         return jdbc.query(sql, usuarioJdbcMapper, id)
@@ -85,14 +88,17 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
     public Optional<Usuario> findByEmailIgnoreCase(String email) {
         String sql = """
     SELECT
-        id AS usuario_id,
-        nome,
-        email,
-        senha,
-        data_ultima_alteracao,
-        tipo
-    FROM usuario
-    WHERE LOWER(email) = LOWER(?)
+        u.id AS usuario_id,
+        u.nome,
+        u.email,
+        u.senha,
+        u.data_ultima_alteracao,
+
+        t.id AS tipo_usuario_id,
+        t.nome_tipo
+    FROM usuario u
+    JOIN tipo_usuario t ON t.id = u.tipo_id
+    WHERE LOWER(u.email) = LOWER(?)
     """;
 
         List<Usuario> usuarios = jdbc.query(

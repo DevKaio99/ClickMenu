@@ -1,7 +1,6 @@
 package click_menu.fiap.com.br.infrastructure.dtos.Usuario;
 
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
-
+import click_menu.fiap.com.br.infrastructure.dtos.TipoUsuario.TipoUsuarioResponseDTO;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -11,6 +10,6 @@ public record UsuarioResponseDTO(
         String nome,
         String email,
         LocalDateTime dataUltimaAlteracao,
-        TipoUsuario tipo
+        TipoUsuarioResponseDTO tipo
 ) {
 }

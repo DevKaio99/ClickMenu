@@ -1,8 +1,9 @@
 package click_menu.fiap.com.br.application.usecases.usuarios;
 
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
+import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioUpdatePassDTO;
 import jakarta.transaction.Transactional;
@@ -24,18 +25,25 @@ public class AtualizarSenhaUsuarioUseCaseTestIT {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
+    private TipoUsuarioRepository tipoUsuarioRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AtualizarSenhaUsuarioUseCase atualizarSenhaUsuarioUseCase;
 
     @Test
     void deveAtualizarSenha() {
+        TipoUsuario tipoCliente = tipoUsuarioRepository.listarTiposUsuario().stream()
+                .filter(tipo -> tipo.getNomeTipo().equals("CLIENTE"))
+                .findFirst()
+                .orElseGet(() -> tipoUsuarioRepository.salvarTipoUsuario(new TipoUsuario("CLIENTE")));
+
         Usuario usuario = usuarioRepository.salvarUsuario(new Usuario(
                 "Teste",
                 "teste@email.com",
                 passwordEncoder.encode("123456"),
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE));
+                tipoCliente));
         UUID id = usuario.getId();
 
     UsuarioUpdatePassDTO usuarioUpdatePassDTO = new UsuarioUpdatePassDTO(
@@ -52,12 +60,17 @@ public class AtualizarSenhaUsuarioUseCaseTestIT {
 
     @Test
     void naoDeveAtualizarSenhaQuandoSenhaAtualErrada() {
+        TipoUsuario tipoCliente = tipoUsuarioRepository.listarTiposUsuario().stream()
+                .filter(tipo -> tipo.getNomeTipo().equals("CLIENTE"))
+                .findFirst()
+                .orElseGet(() -> tipoUsuarioRepository.salvarTipoUsuario(new TipoUsuario("CLIENTE")));
+
         Usuario usuario = usuarioRepository.salvarUsuario(new Usuario(
                 "Teste",
                 "teste@email.com",
                 passwordEncoder.encode("123456"),
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE));
+                tipoCliente));
         UUID id = usuario.getId();
 
         UsuarioUpdatePassDTO usuarioUpdatePassDTO = new UsuarioUpdatePassDTO(

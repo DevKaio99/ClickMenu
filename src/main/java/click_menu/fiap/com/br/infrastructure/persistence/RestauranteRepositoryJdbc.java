@@ -66,11 +66,15 @@ public class RestauranteRepositoryJdbc implements RestauranteRepository {
                 u.email,
                 u.senha,
                 u.data_ultima_alteracao,
-                u.tipo
+
+                t.id AS tipo_usuario_id,
+                t.nome_tipo
 
         FROM restaurante r
         INNER JOIN usuario u
             ON u.id = r.dono_restaurante
+        INNER JOIN tipo_usuario t
+            ON t.id = u.tipo_id
 
         WHERE r.id = ?
         """;

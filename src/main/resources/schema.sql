@@ -9,7 +9,9 @@ CREATE TABLE IF NOT EXISTS usuario (
     email                  VARCHAR(255)     NOT NULL UNIQUE,
     senha                  VARCHAR(255)     NOT NULL,
     data_ultima_alteracao  TIMESTAMP,
-    tipo                   VARCHAR(50)  NOT NULL
+    tipo_id                UUID             NOT NULL,
+
+    CONSTRAINT fk_usuario_tipo FOREIGN KEY (tipo_id) REFERENCES tipo_usuario(id)
     );
 
 CREATE TABLE IF NOT EXISTS restaurante (

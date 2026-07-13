@@ -2,7 +2,6 @@ package click_menu.fiap.com.br.domain.entities;
 
 import click_menu.fiap.com.br.domain.enums.DiasDaSemana;
 import click_menu.fiap.com.br.domain.enums.TipoCozinhaRestaurante;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 
 import java.time.LocalTime;
 import java.util.Set;
@@ -52,7 +51,7 @@ public class Restaurante {
             throw new IllegalArgumentException("Informe os dias de funcionamento");
         }
 
-        if (donoRestaurante == null || !donoRestaurante.getTipo().equals(TipoUsuario.DONO_RESTAURANTE)) {
+        if (donoRestaurante == null || !donoRestaurante.getTipo().getNomeTipo().equals("DONO_RESTAURANTE")) {
             throw new IllegalArgumentException("Informe um usuário que está registrado como Dono de Restaurante");
         }
     }

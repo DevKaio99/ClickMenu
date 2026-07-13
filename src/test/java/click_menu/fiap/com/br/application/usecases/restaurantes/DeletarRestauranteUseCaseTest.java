@@ -2,10 +2,10 @@ package click_menu.fiap.com.br.application.usecases.restaurantes;
 
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.Restaurante;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.enums.DiasDaSemana;
 import click_menu.fiap.com.br.domain.enums.TipoCozinhaRestaurante;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ public class DeletarRestauranteUseCaseTest {
                 "Teste", "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
 
         Restaurante restaurante = new Restaurante(
                 "RestauranteTeste",

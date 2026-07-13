@@ -3,10 +3,10 @@ package click_menu.fiap.com.br.application.usecases.restaurantes;
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.Restaurante;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.enums.DiasDaSemana;
 import click_menu.fiap.com.br.domain.enums.TipoCozinhaRestaurante;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.Restaurante.RestauranteResponseDTO;
@@ -52,7 +52,7 @@ public class AtualizarRestauranteUseCaseTest {
                 "Teste", "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
         usuarioDonoRestaurante.setId(id);
 
         Restaurante restaurante = new Restaurante(
@@ -102,7 +102,7 @@ public class AtualizarRestauranteUseCaseTest {
                 "Teste", "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
         usuarioDonoRestaurante.setId(id);
 
         RestauranteUpdateDTO restauranteUpdateDTO = new RestauranteUpdateDTO(
@@ -128,7 +128,7 @@ public class AtualizarRestauranteUseCaseTest {
                 "Teste", "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
         usuarioDonoRestaurante.setId(id);
 
         Restaurante restaurante = new Restaurante(
@@ -165,14 +165,14 @@ public class AtualizarRestauranteUseCaseTest {
                 "Teste", "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
         usuarioDonoRestaurante.setId(id);
 
         Usuario usuarioCliente = new Usuario(
                 "Teste", "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                new TipoUsuario("CLIENTE"));
         usuarioDonoRestaurante.setId(id);
 
         Restaurante restaurante = new Restaurante(

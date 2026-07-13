@@ -2,8 +2,8 @@ package click_menu.fiap.com.br.application.usecases.usuarios;
 
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +42,7 @@ public class DeletarUsuarioUseCaseTest {
                 "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                new TipoUsuario("CLIENTE"));
 
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));
         when(restauranteRepository.existePorUsuarioId(id)).thenReturn(false);
@@ -71,7 +71,7 @@ public class DeletarUsuarioUseCaseTest {
                 "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                new TipoUsuario("CLIENTE"));
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));
         when(restauranteRepository.existePorUsuarioId(id)).thenReturn(true);
 

@@ -2,9 +2,11 @@ package click_menu.fiap.com.br.application.usecases.usuarios;
 
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
+import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
+import click_menu.fiap.com.br.infrastructure.dtos.TipoUsuario.TipoUsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioUpdateDTO;
 import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
@@ -28,38 +30,43 @@ public class AtualizarUsuarioUseCaseTest {
     private UsuarioRepository usuarioRepository;
     @Mock
     private UsuarioMapper usuarioMapper;
+    @Mock
+    private TipoUsuarioRepository tipoUsuarioRepository;
 
     private AtualizarUsuarioUseCase atualizarUsuarioUseCase;
 
 
     @BeforeEach
     void setUp() {
-        atualizarUsuarioUseCase = new AtualizarUsuarioUseCase(usuarioRepository, usuarioMapper);
+        atualizarUsuarioUseCase = new AtualizarUsuarioUseCase(usuarioRepository, usuarioMapper, tipoUsuarioRepository);
     }
 
     @Test
     void devePermitirAtualizarUsuarioQuandoEmailSeMantem() {
         UUID id = UUID.randomUUID();
+        TipoUsuario tipoCliente = new TipoUsuario("CLIENTE");
+
         Usuario usuario = new Usuario(
                 "Teste",
                 "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                tipoCliente);
 
         UsuarioUpdateDTO usuarioUpdateDTO = new UsuarioUpdateDTO(
                 "Teste",
                 "teste@email.com",
-                TipoUsuario.CLIENTE);
+                tipoCliente.getId());
 
         UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(
                 usuario.getId(),
                 "Teste",
                 "teste@email.com",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                new TipoUsuarioResponseDTO(tipoCliente.getId(), "CLIENTE"));
 
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));
+        when(tipoUsuarioRepository.buscarTipoUsuarioPorId(tipoCliente.getId())).thenReturn(Optional.of(tipoCliente));
         when(usuarioRepository.atualizarUsuario(usuario)).thenReturn(usuario);
         when(usuarioMapper.usuarioResponseDTO(usuario)).thenReturn(usuarioResponseDTO);
 
@@ -72,27 +79,30 @@ public class AtualizarUsuarioUseCaseTest {
     @Test
     void devePermitirAtualizarUsuarioQuandoNovoEmailEstaDisponivel() {
         UUID id = UUID.randomUUID();
+        TipoUsuario tipoCliente = new TipoUsuario("CLIENTE");
+
         Usuario usuario = new Usuario(
                 "Teste",
                 "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                tipoCliente);
 
         UsuarioUpdateDTO usuarioUpdateDTO = new UsuarioUpdateDTO(
                 "Teste",
                 "novoteste@email.com",
-                TipoUsuario.CLIENTE);
+                tipoCliente.getId());
 
         UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(
                 usuario.getId(),
                 "Teste",
                 "teste@email.com",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                new TipoUsuarioResponseDTO(tipoCliente.getId(), "CLIENTE"));
 
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));
         when(usuarioRepository.validarEmailExistente("novoteste@email.com")).thenReturn(false);
+        when(tipoUsuarioRepository.buscarTipoUsuarioPorId(tipoCliente.getId())).thenReturn(Optional.of(tipoCliente));
         when(usuarioRepository.atualizarUsuario(usuario)).thenReturn(usuario);
         when(usuarioMapper.usuarioResponseDTO(usuario)).thenReturn(usuarioResponseDTO);
 
@@ -104,10 +114,12 @@ public class AtualizarUsuarioUseCaseTest {
     @Test
     void naoDevePermitirAtualizarUsuarioQuandoUsuarioNaoExiste() {
         UUID id = UUID.randomUUID();
+        TipoUsuario tipoCliente = new TipoUsuario("CLIENTE");
+
         UsuarioUpdateDTO usuarioUpdateDTO = new UsuarioUpdateDTO(
                 "Teste",
                 "novoteste@email.com",
-                TipoUsuario.CLIENTE);
+                tipoCliente.getId());
 
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.empty());
 
@@ -119,17 +131,19 @@ public class AtualizarUsuarioUseCaseTest {
     @Test
     void naoDevePermitirAtualizarUsuarioQuandoEmailMudouEExisteNovoNoBanco() {
         UUID id = UUID.randomUUID();
+        TipoUsuario tipoCliente = new TipoUsuario("CLIENTE");
+
         Usuario usuario = new Usuario(
                 "Teste",
                 "teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                tipoCliente);
 
         UsuarioUpdateDTO usuarioUpdateDTO = new UsuarioUpdateDTO(
                 "Teste",
                 "novoteste@email.com",
-                TipoUsuario.CLIENTE);
+                tipoCliente.getId());
 
 
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));

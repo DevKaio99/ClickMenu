@@ -4,7 +4,6 @@ import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.Restaurante;
 import click_menu.fiap.com.br.domain.entities.Usuario;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.Restaurante.RestauranteResponseDTO;
@@ -41,7 +40,7 @@ public class AtualizarRestauranteUsecase {
         Usuario usuarioInformado = usuarioRepository.buscarUsuarioPorId(restauranteUpdateDTO.usuarioId())
                 .orElseThrow(() -> new ResourceNotFoundException ("Usuário não encontrado"));
 
-        if (usuarioInformado.getTipo() != TipoUsuario.DONO_RESTAURANTE) {
+        if (!usuarioInformado.getTipo().getNomeTipo().equals("DONO_RESTAURANTE")) {
             throw new BusinessException("Usuário informado não está registrado como DONO de restaurante");
         }
 

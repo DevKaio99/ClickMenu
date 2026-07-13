@@ -1,8 +1,8 @@
 package click_menu.fiap.com.br.infrastructure.config;
 
-import click_menu.fiap.com.br.application.usecases.ItensCardapios.AtualizarItemCardapioUseCase;
-import click_menu.fiap.com.br.application.usecases.ItensCardapios.CriarItemCardapioUseCase;
-import click_menu.fiap.com.br.application.usecases.ItensCardapios.DeletarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.itensCardapios.AtualizarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.itensCardapios.CriarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.itensCardapios.DeletarItemCardapioUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.AtualizarRestauranteUsecase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.CriarRestauranteUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.DeletarRestauranteUseCase;
@@ -31,8 +31,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UseCaseConfig {
 
     @Bean
-    public CriarUsuarioUseCase criarUsuarioUseCase (UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, UsuarioMapper usuarioMapper) {
-        return new CriarUsuarioUseCase(usuarioRepository, passwordEncoder, usuarioMapper);
+    public CriarUsuarioUseCase criarUsuarioUseCase (UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, UsuarioMapper usuarioMapper, TipoUsuarioRepository tipoUsuarioRepository) {
+        return new CriarUsuarioUseCase(usuarioRepository, passwordEncoder, usuarioMapper, tipoUsuarioRepository);
     }
 
     @Bean
@@ -41,8 +41,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public AtualizarUsuarioUseCase atualizarUsuarioUseCase (UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
-        return new AtualizarUsuarioUseCase(usuarioRepository, usuarioMapper);
+    public AtualizarUsuarioUseCase atualizarUsuarioUseCase (UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, TipoUsuarioRepository tipoUsuarioRepository) {
+        return new AtualizarUsuarioUseCase(usuarioRepository, usuarioMapper, tipoUsuarioRepository);
     }
 
     @Bean

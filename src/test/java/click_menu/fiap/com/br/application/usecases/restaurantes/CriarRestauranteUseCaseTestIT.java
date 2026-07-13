@@ -1,11 +1,12 @@
 package click_menu.fiap.com.br.application.usecases.restaurantes;
 
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.enums.DiasDaSemana;
 import click_menu.fiap.com.br.domain.enums.TipoCozinhaRestaurante;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
+import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.Restaurante.RestauranteCreateDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.Restaurante.RestauranteResponseDTO;
@@ -33,13 +34,21 @@ public class CriarRestauranteUseCaseTestIT {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private TipoUsuarioRepository tipoUsuarioRepository;
+
     @Test
     void deveCriarRestauranteNoBancoQuandoNomeEEnderecoInexistente() {
+        TipoUsuario tipoDonoRestaurante = tipoUsuarioRepository.listarTiposUsuario().stream()
+                .filter(tipo -> tipo.getNomeTipo().equals("DONO_RESTAURANTE"))
+                .findFirst()
+                .orElseGet(() -> tipoUsuarioRepository.salvarTipoUsuario(new TipoUsuario("DONO_RESTAURANTE")));
+
         Usuario usuarioDonoRestaurante = new Usuario(
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                tipoDonoRestaurante);
 
         usuarioRepository.salvarUsuario(usuarioDonoRestaurante);
 
@@ -62,11 +71,16 @@ public class CriarRestauranteUseCaseTestIT {
 
     @Test
     void naoDeveCriarUsuarioQuandoNomeEEnderecoExistentes() {
+        TipoUsuario tipoDonoRestaurante = tipoUsuarioRepository.listarTiposUsuario().stream()
+                .filter(tipo -> tipo.getNomeTipo().equals("DONO_RESTAURANTE"))
+                .findFirst()
+                .orElseGet(() -> tipoUsuarioRepository.salvarTipoUsuario(new TipoUsuario("DONO_RESTAURANTE")));
+
         Usuario usuarioDonoRestaurante = new Usuario(
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                tipoDonoRestaurante);
         usuarioRepository.salvarUsuario(usuarioDonoRestaurante);
 
         RestauranteCreateDTO restauranteCreateDTO =  new RestauranteCreateDTO (

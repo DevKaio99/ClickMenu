@@ -61,7 +61,9 @@ return itemCardapio;
                 u.email,
                 u.senha,
                 u.data_ultima_alteracao,
-                u.tipo
+
+                t.id AS tipo_usuario_id,
+                t.nome_tipo
 
             FROM item_cardapio i
 
@@ -70,6 +72,9 @@ return itemCardapio;
 
             INNER JOIN usuario u
                 ON u.id = r.dono_restaurante
+
+            INNER JOIN tipo_usuario t
+                ON t.id = u.tipo_id
 
             WHERE i.id = ?
             """;

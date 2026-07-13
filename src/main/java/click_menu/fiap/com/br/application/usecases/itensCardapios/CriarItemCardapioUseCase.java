@@ -1,4 +1,4 @@
-package click_menu.fiap.com.br.application.usecases.ItensCardapios;
+package click_menu.fiap.com.br.application.usecases.itensCardapios;
 
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.ItemCardapio;

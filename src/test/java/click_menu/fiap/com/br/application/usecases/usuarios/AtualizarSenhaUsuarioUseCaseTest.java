@@ -2,9 +2,10 @@ package click_menu.fiap.com.br.application.usecases.usuarios;
 
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
+import click_menu.fiap.com.br.infrastructure.dtos.TipoUsuario.TipoUsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioUpdatePassDTO;
 import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
@@ -43,12 +44,14 @@ public class AtualizarSenhaUsuarioUseCaseTest {
     @Test
     void devePermitirAtualizarSenha(){
         UUID id = UUID.randomUUID();
+        TipoUsuario tipoCliente = new TipoUsuario("CLIENTE");
+
         Usuario usuario = new Usuario(
                 "Teste",
                 "teste@email.com",
                 "senhaAntigaHash",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                tipoCliente);
 
         UsuarioUpdatePassDTO usuarioUpdatePassDTO = new UsuarioUpdatePassDTO(
                 "123456",
@@ -60,7 +63,7 @@ public class AtualizarSenhaUsuarioUseCaseTest {
                 "Teste",
                 "teste@email.com",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                new TipoUsuarioResponseDTO(tipoCliente.getId(), "CLIENTE"));
 
         when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));
         when(passwordEncoder.matches("123456", "senhaAntigaHash"))
@@ -88,7 +91,7 @@ public class AtualizarSenhaUsuarioUseCaseTest {
                 "teste@email.com",
                 "senhaHash",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE
+                new TipoUsuario("CLIENTE")
         );
 
         UsuarioUpdatePassDTO dto = new UsuarioUpdatePassDTO(

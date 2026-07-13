@@ -2,7 +2,6 @@ package click_menu.fiap.com.br.domain.entities;
 
 import click_menu.fiap.com.br.domain.enums.DiasDaSemana;
 import click_menu.fiap.com.br.domain.enums.TipoCozinhaRestaurante;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +20,7 @@ public class RestauranteTest {
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
 
         Restaurante restaurante = new Restaurante(
                 "RestauranteTeste",
@@ -51,7 +50,7 @@ public class RestauranteTest {
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
 
         assertThrows(IllegalArgumentException.class,
                 () -> new Restaurante(
@@ -72,7 +71,7 @@ public class RestauranteTest {
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
 
         assertThrows(IllegalArgumentException.class,
                 () -> new Restaurante (
@@ -93,7 +92,7 @@ public class RestauranteTest {
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
 
         assertThrows(IllegalArgumentException.class,
                 () -> new Restaurante (
@@ -114,7 +113,7 @@ public class RestauranteTest {
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
 
         assertThrows(IllegalArgumentException.class,
                 () -> new Restaurante (
@@ -135,7 +134,7 @@ public class RestauranteTest {
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
 
         assertThrows(IllegalArgumentException.class,
                 () -> new Restaurante (
@@ -156,7 +155,7 @@ public class RestauranteTest {
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE);
+                new TipoUsuario("DONO_RESTAURANTE"));
 
         assertThrows(IllegalArgumentException.class,
                 () -> new Restaurante (
@@ -177,7 +176,7 @@ public class RestauranteTest {
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.CLIENTE);
+                new TipoUsuario("CLIENTE"));
 
         assertThrows(IllegalArgumentException.class,
                 () -> new Restaurante (

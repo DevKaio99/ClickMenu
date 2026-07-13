@@ -1,8 +1,8 @@
 package click_menu.fiap.com.br.infrastructure.controllers;
 
-import click_menu.fiap.com.br.application.usecases.ItensCardapios.AtualizarItemCardapioUseCase;
-import click_menu.fiap.com.br.application.usecases.ItensCardapios.CriarItemCardapioUseCase;
-import click_menu.fiap.com.br.application.usecases.ItensCardapios.DeletarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.itensCardapios.AtualizarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.itensCardapios.CriarItemCardapioUseCase;
+import click_menu.fiap.com.br.application.usecases.itensCardapios.DeletarItemCardapioUseCase;
 import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioCreateDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioUpdateDTO;

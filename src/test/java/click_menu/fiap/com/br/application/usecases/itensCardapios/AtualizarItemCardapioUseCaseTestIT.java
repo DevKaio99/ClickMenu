@@ -1,14 +1,15 @@
-package click_menu.fiap.com.br.application.usecases.ItensCardapios;
+package click_menu.fiap.com.br.application.usecases.itensCardapios;
 
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.ItemCardapio;
 import click_menu.fiap.com.br.domain.entities.Restaurante;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.enums.DiasDaSemana;
 import click_menu.fiap.com.br.domain.enums.TipoCozinhaRestaurante;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.ItemCardapioRepository;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
+import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioUpdateDTO;
 import jakarta.transaction.Transactional;
@@ -35,16 +36,23 @@ public class AtualizarItemCardapioUseCaseTestIT {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
+    private TipoUsuarioRepository tipoUsuarioRepository;
+    @Autowired
     private AtualizarItemCardapioUseCase atualizarItemCardapioUseCase;
 
     @Test
     void deveAtualizarItemCardapio() {
 
+        TipoUsuario tipoDonoRestaurante = tipoUsuarioRepository.listarTiposUsuario().stream()
+                .filter(tipo -> tipo.getNomeTipo().equals("DONO_RESTAURANTE"))
+                .findFirst()
+                .orElseGet(() -> tipoUsuarioRepository.salvarTipoUsuario(new TipoUsuario("DONO_RESTAURANTE")));
+
         Usuario usuarioDonoRestaurante = usuarioRepository.salvarUsuario(new Usuario(
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE));
+                tipoDonoRestaurante));
 
         Restaurante restaurante = restauranteRepository.salvarRestaurante(new Restaurante (
                 "RestauranteTeste",
@@ -85,11 +93,16 @@ public class AtualizarItemCardapioUseCaseTestIT {
 
     @Test
     void naoDevePermitirAtualizarQuandoRestauranteInexistente() {
+        TipoUsuario tipoDonoRestaurante = tipoUsuarioRepository.listarTiposUsuario().stream()
+                .filter(tipo -> tipo.getNomeTipo().equals("DONO_RESTAURANTE"))
+                .findFirst()
+                .orElseGet(() -> tipoUsuarioRepository.salvarTipoUsuario(new TipoUsuario("DONO_RESTAURANTE")));
+
         Usuario usuarioDonoRestaurante = usuarioRepository.salvarUsuario(new Usuario(
                 "Teste","teste@email.com",
                 "123456",
                 LocalDateTime.now(),
-                TipoUsuario.DONO_RESTAURANTE));
+                tipoDonoRestaurante));
 
         Restaurante restaurante = restauranteRepository.salvarRestaurante(new Restaurante (
                 "RestauranteTeste",

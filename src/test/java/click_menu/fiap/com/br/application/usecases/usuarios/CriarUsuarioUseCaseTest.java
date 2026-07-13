@@ -1,9 +1,11 @@
 package click_menu.fiap.com.br.application.usecases.usuarios;
 
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
+import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
+import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
+import click_menu.fiap.com.br.infrastructure.dtos.TipoUsuario.TipoUsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioCreateDTO;
 import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
@@ -15,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -28,24 +31,28 @@ public class CriarUsuarioUseCaseTest {
     private UsuarioMapper usuarioMapper;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private TipoUsuarioRepository tipoUsuarioRepository;
 
     private CriarUsuarioUseCase criarUsuarioUseCase;
 
 
     @BeforeEach
     void setUp() {
-        criarUsuarioUseCase = new CriarUsuarioUseCase(usuarioRepository, passwordEncoder, usuarioMapper);
+        criarUsuarioUseCase = new CriarUsuarioUseCase(usuarioRepository, passwordEncoder, usuarioMapper, tipoUsuarioRepository);
 
     }
 
     @Test
     void deveCriarUsuarioQuandoEmailNaoExiste() throws Exception {
-        UsuarioCreateDTO usuarioCreateDTO = new UsuarioCreateDTO("Teste","teste@email.com","123456", LocalDateTime.now(), TipoUsuario.CLIENTE);
-        Usuario usuario = new Usuario("Teste","teste@email.com","123456", LocalDateTime.now(), TipoUsuario.CLIENTE);
-        UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(usuario.getId(),"Teste","teste@email.com", LocalDateTime.now(), TipoUsuario.CLIENTE);
+        TipoUsuario tipoCliente = new TipoUsuario("CLIENTE");
+        UsuarioCreateDTO usuarioCreateDTO = new UsuarioCreateDTO("Teste","teste@email.com","123456", LocalDateTime.now(), tipoCliente.getId());
+        Usuario usuario = new Usuario("Teste","teste@email.com","123456", LocalDateTime.now(), tipoCliente);
+        UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(usuario.getId(),"Teste","teste@email.com", LocalDateTime.now(), new TipoUsuarioResponseDTO(tipoCliente.getId(), "CLIENTE"));
 
         when(usuarioRepository.validarEmailExistente("teste@email.com")).thenReturn(false);
-        when(usuarioMapper.toEntity(usuarioCreateDTO)).thenReturn(usuario);
+        when(tipoUsuarioRepository.buscarTipoUsuarioPorId(tipoCliente.getId())).thenReturn(Optional.of(tipoCliente));
+        when(usuarioMapper.toEntity(usuarioCreateDTO, tipoCliente)).thenReturn(usuario);
         when(usuarioRepository.salvarUsuario(usuario)).thenReturn(usuario);
         when(usuarioMapper.usuarioResponseDTO(usuario)).thenReturn(usuarioResponseDTO);
 
@@ -60,7 +67,8 @@ public class CriarUsuarioUseCaseTest {
 
     @Test
     void naoDeveCriarUsuarioQuandoEmailExiste() {
-        UsuarioCreateDTO usuarioCreateDTO = new UsuarioCreateDTO("Teste","teste@email.com","123456", LocalDateTime.now(), TipoUsuario.CLIENTE);
+        TipoUsuario tipoCliente = new TipoUsuario("CLIENTE");
+        UsuarioCreateDTO usuarioCreateDTO = new UsuarioCreateDTO("Teste","teste@email.com","123456", LocalDateTime.now(), tipoCliente.getId());
 
         when(usuarioRepository.validarEmailExistente("teste@email.com")).thenReturn(true);
 

@@ -1,11 +1,11 @@
 package click_menu.fiap.com.br.infrastructure.dtos.Usuario;
 
-import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record UsuarioCreateDTO(
         @NotBlank(message = "O campo não pode estar em branco")
@@ -15,7 +15,7 @@ public record UsuarioCreateDTO(
         @NotBlank(message = "Insira uma senha")
         String senha,
         LocalDateTime dataUltimaAlteracao,
-        @NotNull
-        TipoUsuario tipo
+        @NotNull(message = "Informe o tipo de usuário")
+        UUID tipoId
 ) {
 }
