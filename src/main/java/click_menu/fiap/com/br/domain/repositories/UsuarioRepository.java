@@ -12,4 +12,6 @@ public interface UsuarioRepository {
     boolean validarEmailExistente (String email);
     Optional <Usuario> buscarUsuarioPorId (UUID id);
     Usuario atualizarUsuario(Usuario usuario);
+    Optional<Usuario> findByEmailIgnoreCase(String email);
+    Usuario atualizarSenha(Usuario usuario);
 }

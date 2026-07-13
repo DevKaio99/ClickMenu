@@ -1,6 +1,5 @@
-package click_menu.fiap.com.br.infrastructure.dtos;
+package click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio;
 
-import click_menu.fiap.com.br.domain.entities.Restaurante;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

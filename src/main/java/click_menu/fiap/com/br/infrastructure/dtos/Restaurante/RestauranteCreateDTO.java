@@ -1,4 +1,4 @@
-package click_menu.fiap.com.br.infrastructure.dtos;
+package click_menu.fiap.com.br.infrastructure.dtos.Restaurante;
 
 import click_menu.fiap.com.br.domain.enums.DiasDaSemana;
 import click_menu.fiap.com.br.domain.enums.TipoCozinhaRestaurante;

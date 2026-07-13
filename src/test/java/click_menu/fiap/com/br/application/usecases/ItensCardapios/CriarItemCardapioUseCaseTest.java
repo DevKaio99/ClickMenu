@@ -1,6 +1,5 @@
 package click_menu.fiap.com.br.application.usecases.ItensCardapios;
 
-import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.ItemCardapio;
 import click_menu.fiap.com.br.domain.entities.Restaurante;
@@ -10,13 +9,12 @@ import click_menu.fiap.com.br.domain.enums.TipoCozinhaRestaurante;
 import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.ItemCardapioRepository;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
-import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapioCreateDTO;
-import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapioResponseDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioCreateDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.mappers.ItemCardapioMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.commons.io.Resource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 

@@ -4,14 +4,15 @@ import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
-import click_menu.fiap.com.br.infrastructure.dtos.UsuarioCreateDTO;
-import click_menu.fiap.com.br.infrastructure.dtos.UsuarioResponseDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioCreateDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioResponseDTO;
 import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -25,13 +26,15 @@ public class CriarUsuarioUseCaseTest {
     private UsuarioRepository usuarioRepository;
     @Mock
     private UsuarioMapper usuarioMapper;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     private CriarUsuarioUseCase criarUsuarioUseCase;
 
 
     @BeforeEach
     void setUp() {
-        criarUsuarioUseCase = new CriarUsuarioUseCase(usuarioRepository, usuarioMapper);
+        criarUsuarioUseCase = new CriarUsuarioUseCase(usuarioRepository, passwordEncoder, usuarioMapper);
 
     }
 

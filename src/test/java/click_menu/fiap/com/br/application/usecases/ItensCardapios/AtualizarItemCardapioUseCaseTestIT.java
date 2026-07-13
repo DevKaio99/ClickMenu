@@ -10,7 +10,7 @@ import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.ItemCardapioRepository;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
-import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapioUpdateDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioUpdateDTO;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

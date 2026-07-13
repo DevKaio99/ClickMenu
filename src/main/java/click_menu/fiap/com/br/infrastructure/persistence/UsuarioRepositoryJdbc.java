@@ -6,6 +6,7 @@ import click_menu.fiap.com.br.infrastructure.mappers.UsuarioJdbcMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -77,6 +78,49 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
     public Usuario atualizarUsuario(Usuario usuario) {
         String sql = "UPDATE usuario SET nome = ?, email = ?, data_ultima_alteracao = ? WHERE id = ?";
         jdbc.update(sql, usuario.getNome(), usuario.getEmail(), usuario.getDataUltimaAlteracao(), usuario.getId());
+        return usuario;
+    }
+
+    @Override
+    public Optional<Usuario> findByEmailIgnoreCase(String email) {
+        String sql = """
+    SELECT
+        id AS usuario_id,
+        nome,
+        email,
+        senha,
+        data_ultima_alteracao,
+        tipo
+    FROM usuario
+    WHERE LOWER(email) = LOWER(?)
+    """;
+
+        List<Usuario> usuarios = jdbc.query(
+                sql,
+                usuarioJdbcMapper,
+                email
+        );
+
+        return usuarios.stream().findFirst();
+    }
+
+    @Override
+    public Usuario atualizarSenha(Usuario usuario) {
+
+        String sql = """
+        UPDATE usuario
+        SET senha = ?,
+            data_ultima_alteracao = ?
+        WHERE id = ?
+        """;
+
+        jdbc.update(
+                sql,
+                usuario.getSenha(),
+                usuario.getDataUltimaAlteracao(),
+                usuario.getId()
+        );
+
         return usuario;
     }
 

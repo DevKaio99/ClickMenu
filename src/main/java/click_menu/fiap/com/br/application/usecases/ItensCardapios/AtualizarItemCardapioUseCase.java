@@ -5,8 +5,8 @@ import click_menu.fiap.com.br.domain.entities.ItemCardapio;
 import click_menu.fiap.com.br.domain.entities.Restaurante;
 import click_menu.fiap.com.br.domain.repositories.ItemCardapioRepository;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
-import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapioResponseDTO;
-import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapioUpdateDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioResponseDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioUpdateDTO;
 import click_menu.fiap.com.br.infrastructure.mappers.ItemCardapioMapper;
 
 import java.util.UUID;

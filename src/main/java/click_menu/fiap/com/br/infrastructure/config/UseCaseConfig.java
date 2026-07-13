@@ -6,6 +6,7 @@ import click_menu.fiap.com.br.application.usecases.ItensCardapios.DeletarItemCar
 import click_menu.fiap.com.br.application.usecases.restaurantes.AtualizarRestauranteUsecase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.CriarRestauranteUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.DeletarRestauranteUseCase;
+import click_menu.fiap.com.br.application.usecases.usuarios.AtualizarSenhaUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.AtualizarUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.CriarUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.DeletarUsuarioUseCase;
@@ -17,13 +18,14 @@ import click_menu.fiap.com.br.infrastructure.mappers.RestauranteMapper;
 import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class UseCaseConfig {
 
     @Bean
-    public CriarUsuarioUseCase criarUsuarioUseCase (UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
-        return new CriarUsuarioUseCase(usuarioRepository, usuarioMapper);
+    public CriarUsuarioUseCase criarUsuarioUseCase (UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, UsuarioMapper usuarioMapper) {
+        return new CriarUsuarioUseCase(usuarioRepository, passwordEncoder, usuarioMapper);
     }
 
     @Bean
@@ -34,6 +36,11 @@ public class UseCaseConfig {
     @Bean
     public AtualizarUsuarioUseCase atualizarUsuarioUseCase (UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
         return new AtualizarUsuarioUseCase(usuarioRepository, usuarioMapper);
+    }
+
+    @Bean
+    public AtualizarSenhaUsuarioUseCase atualizarSenhaUsuarioUseCase(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder) {
+        return new AtualizarSenhaUsuarioUseCase(usuarioRepository, usuarioMapper, passwordEncoder);
     }
 
     @Bean

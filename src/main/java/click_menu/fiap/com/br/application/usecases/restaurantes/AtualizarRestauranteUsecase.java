@@ -7,8 +7,8 @@ import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
-import click_menu.fiap.com.br.infrastructure.dtos.RestauranteResponseDTO;
-import click_menu.fiap.com.br.infrastructure.dtos.RestauranteUpdateDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Restaurante.RestauranteResponseDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Restaurante.RestauranteUpdateDTO;
 import click_menu.fiap.com.br.infrastructure.mappers.RestauranteMapper;
 
 import java.util.UUID;

@@ -4,8 +4,8 @@ import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
-import click_menu.fiap.com.br.infrastructure.dtos.UsuarioResponseDTO;
-import click_menu.fiap.com.br.infrastructure.dtos.UsuarioUpdateDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioResponseDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioUpdateDTO;
 import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
 
 import java.time.LocalDateTime;

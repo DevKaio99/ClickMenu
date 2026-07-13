@@ -3,8 +3,8 @@ package click_menu.fiap.com.br.application.usecases.usuarios;
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
 import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
-import click_menu.fiap.com.br.infrastructure.dtos.UsuarioCreateDTO;
-import click_menu.fiap.com.br.infrastructure.dtos.UsuarioResponseDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioCreateDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioResponseDTO;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ public class CriarUsuarioUseCaseTestIT {
 
         @Autowired
         private CriarUsuarioUseCase criarUsuarioUseCase;
-
         @Autowired
         private UsuarioRepository usuarioRepository;
 

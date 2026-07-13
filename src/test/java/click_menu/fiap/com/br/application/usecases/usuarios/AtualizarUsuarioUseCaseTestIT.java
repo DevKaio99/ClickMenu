@@ -4,8 +4,7 @@ import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
-import click_menu.fiap.com.br.infrastructure.dtos.UsuarioUpdateDTO;
-import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
+import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioUpdateDTO;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ public class AtualizarUsuarioUseCaseTestIT {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-    @Autowired
-    private UsuarioMapper usuarioMapper;
     @Autowired
     private AtualizarUsuarioUseCase atualizarUsuarioUseCase;
 

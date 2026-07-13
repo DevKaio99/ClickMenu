@@ -2,8 +2,8 @@ package click_menu.fiap.com.br.infrastructure.mappers;
 
 import click_menu.fiap.com.br.domain.entities.ItemCardapio;
 import click_menu.fiap.com.br.domain.entities.Restaurante;
-import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapioCreateDTO;
-import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapioResponseDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioCreateDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio.ItemCardapioResponseDTO;
 import org.springframework.stereotype.Component;
 
 @Component

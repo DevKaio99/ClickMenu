@@ -6,8 +6,8 @@ import click_menu.fiap.com.br.domain.entities.Restaurante;
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
-import click_menu.fiap.com.br.infrastructure.dtos.RestauranteCreateDTO;
-import click_menu.fiap.com.br.infrastructure.dtos.RestauranteResponseDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Restaurante.RestauranteCreateDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Restaurante.RestauranteResponseDTO;
 import click_menu.fiap.com.br.infrastructure.mappers.RestauranteMapper;
 
 public class CriarRestauranteUseCase {

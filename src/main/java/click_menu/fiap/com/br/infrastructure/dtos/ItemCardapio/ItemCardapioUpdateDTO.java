@@ -1,4 +1,4 @@
-package click_menu.fiap.com.br.infrastructure.dtos;
+package click_menu.fiap.com.br.infrastructure.dtos.ItemCardapio;
 
 import jakarta.validation.constraints.NotNull;
 

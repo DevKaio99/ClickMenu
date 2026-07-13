@@ -1,8 +1,8 @@
 package click_menu.fiap.com.br.infrastructure.mappers;
 
 import click_menu.fiap.com.br.domain.entities.Usuario;
-import click_menu.fiap.com.br.infrastructure.dtos.UsuarioCreateDTO;
-import click_menu.fiap.com.br.infrastructure.dtos.UsuarioResponseDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioCreateDTO;
+import click_menu.fiap.com.br.infrastructure.dtos.Usuario.UsuarioResponseDTO;
 import org.springframework.stereotype.Component;
 
 @Component

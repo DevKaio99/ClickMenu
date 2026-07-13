@@ -1,4 +1,4 @@
-package click_menu.fiap.com.br.infrastructure.dtos;
+package click_menu.fiap.com.br.infrastructure.dtos.Usuario;
 
 import click_menu.fiap.com.br.domain.enums.TipoUsuario;
 
