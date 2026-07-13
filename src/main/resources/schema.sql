@@ -1,3 +1,8 @@
+CREATE TABLE IF NOT EXISTS tipo_usuario (
+    id                     UUID             PRIMARY KEY,
+    nome_tipo              VARCHAR(50)      NOT NULL UNIQUE
+    );
+
 CREATE TABLE IF NOT EXISTS usuario (
     id                     UUID             PRIMARY KEY,
     nome                   VARCHAR(255)     NOT NULL,

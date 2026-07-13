@@ -6,15 +6,22 @@ import click_menu.fiap.com.br.application.usecases.ItensCardapios.DeletarItemCar
 import click_menu.fiap.com.br.application.usecases.restaurantes.AtualizarRestauranteUsecase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.CriarRestauranteUseCase;
 import click_menu.fiap.com.br.application.usecases.restaurantes.DeletarRestauranteUseCase;
+import click_menu.fiap.com.br.application.usecases.tiposUsuario.AtualizarTipoUsuarioUseCase;
+import click_menu.fiap.com.br.application.usecases.tiposUsuario.BuscarTipoUsuarioPorIdUseCase;
+import click_menu.fiap.com.br.application.usecases.tiposUsuario.CriarTipoUsuarioUseCase;
+import click_menu.fiap.com.br.application.usecases.tiposUsuario.DeletarTipoUsuarioUseCase;
+import click_menu.fiap.com.br.application.usecases.tiposUsuario.ListarTiposUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.AtualizarSenhaUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.AtualizarUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.CriarUsuarioUseCase;
 import click_menu.fiap.com.br.application.usecases.usuarios.DeletarUsuarioUseCase;
 import click_menu.fiap.com.br.domain.repositories.ItemCardapioRepository;
 import click_menu.fiap.com.br.domain.repositories.RestauranteRepository;
+import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
 import click_menu.fiap.com.br.domain.repositories.UsuarioRepository;
 import click_menu.fiap.com.br.infrastructure.mappers.ItemCardapioMapper;
 import click_menu.fiap.com.br.infrastructure.mappers.RestauranteMapper;
+import click_menu.fiap.com.br.infrastructure.mappers.TipoUsuarioMapper;
 import click_menu.fiap.com.br.infrastructure.mappers.UsuarioMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -71,5 +78,30 @@ public class UseCaseConfig {
     @Bean
     public DeletarItemCardapioUseCase deletarItemCardapioUseCase (ItemCardapioRepository itemCardapioRepository) {
         return new DeletarItemCardapioUseCase(itemCardapioRepository);
+    }
+
+    @Bean
+    public CriarTipoUsuarioUseCase criarTipoUsuarioUseCase (TipoUsuarioRepository tipoUsuarioRepository, TipoUsuarioMapper tipoUsuarioMapper) {
+        return new CriarTipoUsuarioUseCase(tipoUsuarioRepository, tipoUsuarioMapper);
+    }
+
+    @Bean
+    public ListarTiposUsuarioUseCase listarTiposUsuarioUseCase (TipoUsuarioRepository tipoUsuarioRepository, TipoUsuarioMapper tipoUsuarioMapper) {
+        return new ListarTiposUsuarioUseCase(tipoUsuarioRepository, tipoUsuarioMapper);
+    }
+
+    @Bean
+    public BuscarTipoUsuarioPorIdUseCase buscarTipoUsuarioPorIdUseCase (TipoUsuarioRepository tipoUsuarioRepository, TipoUsuarioMapper tipoUsuarioMapper) {
+        return new BuscarTipoUsuarioPorIdUseCase(tipoUsuarioRepository, tipoUsuarioMapper);
+    }
+
+    @Bean
+    public AtualizarTipoUsuarioUseCase atualizarTipoUsuarioUseCase (TipoUsuarioRepository tipoUsuarioRepository, TipoUsuarioMapper tipoUsuarioMapper) {
+        return new AtualizarTipoUsuarioUseCase(tipoUsuarioRepository, tipoUsuarioMapper);
+    }
+
+    @Bean
+    public DeletarTipoUsuarioUseCase deletarTipoUsuarioUseCase (TipoUsuarioRepository tipoUsuarioRepository) {
+        return new DeletarTipoUsuarioUseCase(tipoUsuarioRepository);
     }
 }
