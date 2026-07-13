@@ -1,6 +1,7 @@
 package click_menu.fiap.com.br.application.usecases.usuarios;
 
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
+import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
 import click_menu.fiap.com.br.domain.repositories.TipoUsuarioRepository;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -77,6 +79,20 @@ public class CriarUsuarioUseCaseTest {
 
         verify(usuarioRepository, never()).salvarUsuario(any());
 
+    }
+
+    @Test
+    void naoDeveCriarUsuarioQuandoTipoNaoEncontrado() {
+        UUID tipoId = UUID.randomUUID();
+        UsuarioCreateDTO usuarioCreateDTO = new UsuarioCreateDTO("Teste","teste@email.com","123456", LocalDateTime.now(), tipoId);
+
+        when(usuarioRepository.validarEmailExistente("teste@email.com")).thenReturn(false);
+        when(tipoUsuarioRepository.buscarTipoUsuarioPorId(tipoId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class,
+                () -> criarUsuarioUseCase.executar(usuarioCreateDTO));
+
+        verify(usuarioRepository, never()).salvarUsuario(any());
     }
 
 }

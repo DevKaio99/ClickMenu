@@ -40,13 +40,13 @@ public class UsuarioTest {
     @DisplayName("Não deve criar usuário quando o TIPO é nulo")
     void naoDevePermitirTipoNulo() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Usuario ("Teste","emailinvalido.com","123456", LocalDateTime.now(), null));
+                () -> new Usuario ("Teste","teste@email.com","123456", LocalDateTime.now(), null));
     }
 
     @Test
     @DisplayName("Não deve permitir criar usuário com senha menor que 6 caracteres")
     void naoDevePermitirSenhaCurta() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Usuario ("Teste","emailinvalido.com","123", LocalDateTime.now(), new TipoUsuario("CLIENTE")));
+                () -> new Usuario ("Teste","teste@email.com","123", LocalDateTime.now(), new TipoUsuario("CLIENTE")));
     }
 }

@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>click-menu</groupId>
-	<artifactId>fiap.com.br</artifactId>
+	<artifactId>ClickMenu</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>

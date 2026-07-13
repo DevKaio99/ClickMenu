@@ -1,6 +1,7 @@
 package click_menu.fiap.com.br.application.usecases.restaurantes;
 
 import click_menu.fiap.com.br.application.exceptions.BusinessException;
+import click_menu.fiap.com.br.application.exceptions.ResourceNotFoundException;
 import click_menu.fiap.com.br.domain.entities.Restaurante;
 import click_menu.fiap.com.br.domain.entities.TipoUsuario;
 import click_menu.fiap.com.br.domain.entities.Usuario;
@@ -122,6 +123,26 @@ public class CriarRestauranteUseCaseTest {
 
     }
 
+    @Test
+    void naoDeveCriarRestauranteQuandoUsuarioNaoEncontrado() {
+        UUID id = UUID.randomUUID();
 
+        RestauranteCreateDTO restauranteCreateDTO = new RestauranteCreateDTO(
+                "RestauranteTeste",
+                "Rua de exemplo, 123",
+                TipoCozinhaRestaurante.JAPONESA,
+                LocalTime.now(),
+                LocalTime.now(),
+                EnumSet.of(DiasDaSemana.SEGUNDA, DiasDaSemana.TERCA, DiasDaSemana.QUARTA, DiasDaSemana.QUINTA, DiasDaSemana.SEXTA),
+                id);
+
+        when(restauranteRepository.validarNomeEEnderecoExistente("RestauranteTeste", "Rua de exemplo, 123")).thenReturn(false);
+        when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class,
+                () -> criarRestauranteUseCase.executar(restauranteCreateDTO));
+
+        verify(restauranteRepository, never()).salvarRestaurante(any());
+    }
 
 }

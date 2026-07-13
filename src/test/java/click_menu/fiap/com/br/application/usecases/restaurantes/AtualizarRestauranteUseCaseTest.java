@@ -203,4 +203,41 @@ public class AtualizarRestauranteUseCaseTest {
 
     }
 
+    @Test
+    void naoDevePermitirAtualizarRestauranteQuandoUsuarioInformadoNaoEncontrado() {
+        UUID id = UUID.randomUUID();
+        UUID usuarioId = UUID.randomUUID();
+
+        Usuario usuarioDonoRestaurante = new Usuario(
+                "Teste", "teste@email.com",
+                "123456",
+                LocalDateTime.now(),
+                new TipoUsuario("DONO_RESTAURANTE"));
+
+        Restaurante restaurante = new Restaurante(
+                "RestauranteTeste",
+                "Rua de exemplo, 344",
+                TipoCozinhaRestaurante.JAPONESA,
+                LocalTime.now(),
+                LocalTime.now(),
+                EnumSet.of(DiasDaSemana.SEGUNDA, DiasDaSemana.TERCA, DiasDaSemana.QUARTA, DiasDaSemana.QUINTA, DiasDaSemana.SEXTA),
+                usuarioDonoRestaurante);
+
+        RestauranteUpdateDTO restauranteUpdateDTO = new RestauranteUpdateDTO(
+                "RestauranteTeste",
+                "Rua de exemplo, 344",
+                TipoCozinhaRestaurante.JAPONESA,
+                LocalTime.now(),
+                LocalTime.now(),
+                EnumSet.of(DiasDaSemana.SEGUNDA, DiasDaSemana.TERCA, DiasDaSemana.QUARTA, DiasDaSemana.QUINTA, DiasDaSemana.SEXTA),
+                usuarioId);
+
+        when(restauranteRepository.buscarRestaurantePorId(id)).thenReturn(Optional.of(restaurante));
+        when(usuarioRepository.buscarUsuarioPorId(usuarioId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> atualizarRestauranteUsecase.executar(id, restauranteUpdateDTO));
+
+        verify(restauranteRepository, never()).atualizarRestaurante(any());
+    }
+
 }

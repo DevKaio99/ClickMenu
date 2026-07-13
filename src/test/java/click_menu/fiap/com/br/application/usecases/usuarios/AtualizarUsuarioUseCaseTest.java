@@ -153,4 +153,30 @@ public class AtualizarUsuarioUseCaseTest {
 
         verify(usuarioRepository, never()).atualizarUsuario(usuario);
     }
+
+    @Test
+    void naoDevePermitirAtualizarUsuarioQuandoTipoNaoEncontrado() {
+        UUID id = UUID.randomUUID();
+        UUID novoTipoId = UUID.randomUUID();
+        TipoUsuario tipoCliente = new TipoUsuario("CLIENTE");
+
+        Usuario usuario = new Usuario(
+                "Teste",
+                "teste@email.com",
+                "123456",
+                LocalDateTime.now(),
+                tipoCliente);
+
+        UsuarioUpdateDTO usuarioUpdateDTO = new UsuarioUpdateDTO(
+                "Teste",
+                "teste@email.com",
+                novoTipoId);
+
+        when(usuarioRepository.buscarUsuarioPorId(id)).thenReturn(Optional.of(usuario));
+        when(tipoUsuarioRepository.buscarTipoUsuarioPorId(novoTipoId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> atualizarUsuarioUseCase.executar(id, usuarioUpdateDTO));
+
+        verify(usuarioRepository, never()).atualizarUsuario(any());
+    }
 }

@@ -162,4 +162,44 @@ public class ItemCardapioTest {
                         null));
 
     }
+
+    @Test
+    @DisplayName("Deve permitir alterar o restaurante do item via setter")
+    void devePermitirAlterarRestauranteViaSetter() {
+        Usuario usuarioTeste = new Usuario(
+                "Teste","teste@email.com",
+                "123456",
+                LocalDateTime.now(),
+                new TipoUsuario("DONO_RESTAURANTE"));
+
+        Restaurante restaurante = new Restaurante(
+                "RestauranteTeste",
+                "Rua de exemplo, 344",
+                TipoCozinhaRestaurante.JAPONESA,
+                LocalTime.now(),
+                LocalTime.now(),
+                EnumSet.of(DiasDaSemana.SEGUNDA, DiasDaSemana.TERCA, DiasDaSemana.QUARTA, DiasDaSemana.QUINTA, DiasDaSemana.SEXTA),
+                usuarioTeste);
+
+        Restaurante outroRestaurante = new Restaurante(
+                "OutroRestauranteTeste",
+                "Rua de exemplo, 111",
+                TipoCozinhaRestaurante.JAPONESA,
+                LocalTime.now(),
+                LocalTime.now(),
+                EnumSet.of(DiasDaSemana.SEGUNDA),
+                usuarioTeste);
+
+        ItemCardapio itemCardapio = new ItemCardapio(
+                "Frango a milanesa",
+                "frango empanado com farinha",
+                BigDecimal.valueOf(29.90),
+                true,
+                "/...",
+                restaurante);
+
+        itemCardapio.setRestaurante(outroRestaurante);
+
+        assertEquals(outroRestaurante, itemCardapio.getRestaurante());
+    }
 }
