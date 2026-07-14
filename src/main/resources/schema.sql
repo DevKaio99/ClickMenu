@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS restaurante (
     nome_restaurante        VARCHAR(255)    NOT NULL,
     endereco_restaurante    VARCHAR(255)    NOT NULL,
     tipo_cozinha            VARCHAR(50)     NOT NULL,
-    horario_abertura        TIMESTAMP       NOT NULL,
-    horario_fechamento      TIMESTAMP       NOT NULL,
+    horario_abertura        TIME            NOT NULL,
+    horario_fechamento      TIME            NOT NULL,
     dias_funcionamento      VARCHAR(50)     NOT NULL,
     dono_restaurante        UUID            NOT NULL,
 
