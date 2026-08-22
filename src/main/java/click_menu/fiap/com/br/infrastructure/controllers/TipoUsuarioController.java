@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class TipoUsuarioController {
     }
 
     @Operation(summary = "Criação de Tipo de Usuário", description = "Cria um tipo de usuário")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<TipoUsuarioResponseDTO> criarTipoUsuario(
             @Valid @RequestBody TipoUsuarioCreateDTO tipoUsuarioCreateDTO) {
@@ -48,18 +50,21 @@ public class TipoUsuarioController {
     }
 
     @Operation(summary = "Listar Tipos de Usuário", description = "Lista os tipos de usuário")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<TipoUsuarioResponseDTO>> listar() {
         return ResponseEntity.ok(listarTiposUsuarioUseCase.executar());
     }
 
     @Operation(summary = "Buscar Tipo de Usuário", description = "Busca um tipo de usuário conforme ID")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<TipoUsuarioResponseDTO> buscarPorId(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(buscarTipoUsuarioPorIdUseCase.executar(id));
     }
 
     @Operation(summary = "Atualização de Tipo de Usuário", description = "Atualiza um tipo de usuário conforme ID")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TipoUsuarioResponseDTO> atualizar(
             @PathVariable("id") UUID id,
@@ -71,6 +76,7 @@ public class TipoUsuarioController {
     }
 
     @Operation(summary = "Deleção de Tipo de Usuário", description = "Deleta um tipo de usuário conforme ID")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable("id") UUID id) {
         deletarTipoUsuarioUseCase.executar(id);

@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,6 +51,7 @@ public class RestauranteController {
             @ApiResponse(responseCode = "404", description = "Usuário informado como dono não encontrado",
                     content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
+    @PreAuthorize("hasRole('DONO_RESTAURANTE, ADMIN')")
     @PostMapping
     public ResponseEntity<RestauranteResponseDTO> criarRestaurante(
             @Valid @RequestBody RestauranteCreateDTO restauranteCreateDTO) {
@@ -90,6 +92,7 @@ public class RestauranteController {
             @ApiResponse(responseCode = "404", description = "Restaurante ou usuário não encontrado",
                     content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
+    @PreAuthorize("hasRole('DONO_RESTAURANTE, ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<RestauranteResponseDTO> atualizar (
             @PathVariable ("id")UUID id,
@@ -106,6 +109,7 @@ public class RestauranteController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Restaurante deletado")
     })
+    @PreAuthorize("hasRole('DONO_RESTAURANTE, ADMIN')")
     @DeleteMapping("/{id}")
     public void deletar (@PathVariable("id") UUID id) {
         deletarRestauranteUseCase.executar(id);

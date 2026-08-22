@@ -20,11 +20,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         Usuario usuario = usuarioRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não cadastrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário ou senha inválidos"));
 
         return User.builder()
                 .username(usuario.getEmail())
                 .password(usuario.getSenha())
+                .roles(usuario.getTipo().getNomeTipo())
                 .build();
     }
 }

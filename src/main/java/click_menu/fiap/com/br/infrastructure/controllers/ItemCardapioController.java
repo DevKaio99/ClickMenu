@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,6 +51,7 @@ public class ItemCardapioController {
             @ApiResponse(responseCode = "404", description = "Restaurante informado não encontrado",
                     content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
+    @PreAuthorize("hasRole('DONO_RESTAURANTE, ADMIN')")
     @PostMapping
     public ResponseEntity<ItemCardapioResponseDTO> criarItemCardapio(
             @Valid @RequestBody ItemCardapioCreateDTO itemCardapioCreateDTO) {
@@ -88,6 +90,7 @@ public class ItemCardapioController {
             @ApiResponse(responseCode = "404", description = "Item ou restaurante informado não encontrado",
                     content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
+    @PreAuthorize("hasRole('DONO_RESTAURANTE, ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ItemCardapioResponseDTO> atualizar (
             @PathVariable ("id")UUID id,
@@ -103,6 +106,7 @@ public class ItemCardapioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Item deletado")
     })
+    @PreAuthorize("hasRole('DONO_RESTAURANTE, ADMIN')")
     @DeleteMapping("/{id}")
     public void deletar (@PathVariable ("id") UUID id) {
         deletarItemCardapioUseCase.executar(id);
